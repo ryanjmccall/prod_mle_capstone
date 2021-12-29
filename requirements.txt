@@ -1,111 +1,445 @@
-absl-py==0.15.0
-appnope @ file:///Users/runner/miniforge3/conda-bld/appnope_1610094676799/work
-argon2-cffi @ file:///Users/runner/miniforge3/conda-bld/argon2-cffi_1633990745566/work
-astunparse==1.6.3
-async-generator==1.10
-attrs @ file:///home/conda/feedstock_root/build_artifacts/attrs_1620387926260/work
-backcall @ file:///home/conda/feedstock_root/build_artifacts/backcall_1592338393461/work
-backports.functools-lru-cache @ file:///home/conda/feedstock_root/build_artifacts/backports.functools_lru_cache_1618230623929/work
-bleach @ file:///home/conda/feedstock_root/build_artifacts/bleach_1629908509068/work
-cachetools==4.2.4
-certifi==2021.10.8
-cffi @ file:///Users/runner/miniforge3/conda-bld/cffi_1631636289798/work
-charset-normalizer==2.0.7
-clang==5.0
-debugpy @ file:///Users/runner/miniforge3/conda-bld/debugpy_1627074992779/work
-decorator @ file:///home/conda/feedstock_root/build_artifacts/decorator_1631346842025/work
-defusedxml @ file:///home/conda/feedstock_root/build_artifacts/defusedxml_1615232257335/work
-entrypoints @ file:///home/conda/feedstock_root/build_artifacts/entrypoints_1605121927639/work/dist/entrypoints-0.3-py2.py3-none-any.whl
-flatbuffers==1.12
-gast==0.4.0
-google-auth==2.3.3
-google-auth-oauthlib==0.4.6
-google-pasta==0.2.0
-grpcio==1.41.1
-h5py==3.1.0
-idna==3.3
-importlib-metadata @ file:///Users/runner/miniforge3/conda-bld/importlib-metadata_1630267509190/work
-ipykernel @ file:///Users/runner/miniforge3/conda-bld/ipykernel_1634726430246/work/dist/ipykernel-6.4.2-py3-none-any.whl
-ipython @ file:///Users/runner/miniforge3/conda-bld/ipython_1632764055494/work
-ipython-genutils==0.2.0
-ipywidgets @ file:///home/conda/feedstock_root/build_artifacts/ipywidgets_1631590360471/work
-jedi @ file:///Users/runner/miniforge3/conda-bld/jedi_1610146833874/work
-Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1633656206378/work
-joblib==1.1.0
-jsonschema @ file:///home/conda/feedstock_root/build_artifacts/jsonschema_1634752161479/work
-jupyter @ file:///Users/runner/miniforge3/conda-bld/jupyter_1611871929170/work
-jupyter-client @ file:///home/conda/feedstock_root/build_artifacts/jupyter_client_1633454794268/work
-jupyter-console @ file:///home/conda/feedstock_root/build_artifacts/jupyter_console_1616560109969/work
-jupyter-core @ file:///Users/runner/miniforge3/conda-bld/jupyter_core_1635407484999/work
-jupyterlab-pygments @ file:///home/conda/feedstock_root/build_artifacts/jupyterlab_pygments_1601375948261/work
-jupyterlab-widgets @ file:///home/conda/feedstock_root/build_artifacts/jupyterlab_widgets_1631590465624/work
-keras==2.6.0
-Keras-Preprocessing==1.1.2
-llvmlite==0.37.0
-Markdown==3.3.4
-MarkupSafe @ file:///Users/runner/miniforge3/conda-bld/markupsafe_1621455730621/work
-matplotlib-inline @ file:///home/conda/feedstock_root/build_artifacts/matplotlib-inline_1631080358261/work
-mistune @ file:///Users/runner/miniforge3/conda-bld/mistune_1624941333556/work
-nbclient @ file:///home/conda/feedstock_root/build_artifacts/nbclient_1629120697898/work
-nbconvert @ file:///Users/runner/miniforge3/conda-bld/nbconvert_1632536035327/work
-nbformat @ file:///home/conda/feedstock_root/build_artifacts/nbformat_1617383142101/work
-nest-asyncio @ file:///home/conda/feedstock_root/build_artifacts/nest-asyncio_1617163391303/work
-notebook @ file:///home/conda/feedstock_root/build_artifacts/notebook_1634668519289/work
-numba==0.54.1
-numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1634853074130/work
-oauthlib==3.1.1
-opt-einsum==3.3.0
-packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1625323647219/work
-pandas==1.3.4
-pandocfilters @ file:///home/conda/feedstock_root/build_artifacts/pandocfilters_1631603243851/work
-parso @ file:///home/conda/feedstock_root/build_artifacts/parso_1617148930513/work
-patsy==0.5.2
-pexpect @ file:///home/conda/feedstock_root/build_artifacts/pexpect_1602535608087/work
-pickleshare @ file:///home/conda/feedstock_root/build_artifacts/pickleshare_1602536217715/work
-prometheus-client @ file:///home/conda/feedstock_root/build_artifacts/prometheus_client_1635538335951/work
-prompt-toolkit @ file:///home/conda/feedstock_root/build_artifacts/prompt-toolkit_1634921890410/work
-protobuf==3.19.1
-ptyprocess @ file:///home/conda/feedstock_root/build_artifacts/ptyprocess_1609419310487/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
-py4j @ file:///home/conda/feedstock_root/build_artifacts/py4j_1634546926028/work
-pyarrow==2.0.0
-pyasn1==0.4.8
-pyasn1-modules==0.2.8
-pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1593275161868/work
-Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1629119114968/work
-pyod==0.9.5
-pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1635368442055/work
-pyrsistent @ file:///Users/runner/miniforge3/conda-bld/pyrsistent_1624984585468/work
-pyspark @ file:///home/conda/feedstock_root/build_artifacts/pyspark_1634556927624/work
-python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1626286286081/work
-pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1633452062248/work
-pyzmq @ file:///Users/runner/miniforge3/conda-bld/pyzmq_1631793589817/work
-qtconsole @ file:///home/conda/feedstock_root/build_artifacts/qtconsole_1625023841584/work
-QtPy @ file:///home/conda/feedstock_root/build_artifacts/qtpy_1632440819550/work
-requests==2.26.0
-requests-oauthlib==1.3.0
-rsa==4.7.2
-scikit-learn==1.0.1
-scipy @ file:///Users/runner/miniforge3/conda-bld/scipy_1628206458939/work
-Send2Trash @ file:///home/conda/feedstock_root/build_artifacts/send2trash_1628511208346/work
-six==1.15.0
-statsmodels==0.13.0
-tensorboard==2.7.0
-tensorboard-data-server==0.6.1
-tensorboard-plugin-wit==1.8.0
-tensorflow==2.6.1
-tensorflow-estimator==2.6.0
-termcolor==1.1.0
-terminado @ file:///Users/runner/miniforge3/conda-bld/terminado_1631128524766/work
-testpath @ file:///home/conda/feedstock_root/build_artifacts/testpath_1621261527237/work
-threadpoolctl==3.0.0
-torch==1.10.0
-tornado @ file:///Users/runner/miniforge3/conda-bld/tornado_1625489059091/work
-traitlets @ file:///home/conda/feedstock_root/build_artifacts/traitlets_1635260543454/work
-typing-extensions==3.7.4.3
-urllib3==1.26.7
-wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1600965781394/work
-webencodings==0.5.1
-Werkzeug==2.0.2
-widgetsnbextension @ file:///Users/runner/miniforge3/conda-bld/widgetsnbextension_1635456324826/work
-wrapt==1.12.1
-zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1633302054558/work
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: osx-64
+_py-xgboost-mutex=2.0=cpu_0
+abseil-cpp=20210324.2=he49afe7_0
+absl-py=0.15.0=pyhd8ed1ab_0
+aiohttp=3.7.4.post0=py37h271585c_1
+altair=4.1.0=py_1
+ansiwrap=0.8.4=pypi_0
+anyio=3.3.4=py37hf985489_0
+aom=3.2.0=he49afe7_2
+appdirs=1.4.4=pyh9f0ad1d_0
+appnope=0.1.2=py37hf985489_1
+argcomplete=1.12.3=pyhd8ed1ab_2
+argh=0.26.2=pyh9f0ad1d_1002
+argon2-cffi=21.1.0=py37h271585c_2
+arrow=1.2.1=pyhd8ed1ab_0
+arrow-cpp=5.0.0=py37h4b5612e_4_cpu
+asn1crypto=1.4.0=pyh9f0ad1d_0
+astor=0.8.1=pyh9f0ad1d_0
+astunparse=1.6.3=pyhd8ed1ab_0
+async-timeout=3.0.1=py_1000
+async_generator=1.10=py_0
+atk-1.0=2.36.0=he69c4ee_4
+attrs=21.2.0=pyhd8ed1ab_0
+audioread=2.1.9=py37hf985489_1
+aws-c-cal=0.5.11=hd2e2f4b_0
+aws-c-common=0.6.2=h0d85af4_0
+aws-c-event-stream=0.2.7=hb9330a7_13
+aws-c-io=0.10.5=h35aa462_0
+aws-checksums=0.1.11=h0010a65_7
+aws-sdk-cpp=1.8.186=h766a74d_3
+babel=2.9.1=pyh44b312d_0
+backcall=0.2.0=pyh9f0ad1d_0
+backports=1.0=py_2
+backports.functools_lru_cache=1.6.4=pyhd8ed1ab_0
+backports.zoneinfo=0.2.1=py37h271585c_4
+base58=2.1.1=pyhd8ed1ab_0
+binaryornot=0.4.4=py_1
+black=21.10b0=pypi_0
+blas=2.112=mkl
+blas-devel=3.9.0=12_osx64_mkl
+bleach=4.1.0=pyhd8ed1ab_0
+blinker=1.4=py_1
+bokeh=1.4.0=py37hc8dfbb8_1
+boost=1.74.0=py37h326c9ff_4
+boost-cpp=1.74.0=hff03dee_4
+boto3=1.20.21=pyhd8ed1ab_0
+botocore=1.23.21=pyhd8ed1ab_0
+bottleneck=1.3.2=pypi_0
+brotlipy=0.7.0=py37h271585c_1003
+bzip2=1.0.8=h0d85af4_4
+c-ares=1.18.1=h0d85af4_0
+ca-certificates=2021.10.8=h033912b_0
+cached-property=1.5.2=hd8ed1ab_1
+cached_property=1.5.2=pyha770c72_1
+cachetools=4.2.4=pyhd8ed1ab_0
+cairo=1.16.0=he43a7df_1008
+catalogue=2.0.6=py37hf985489_0
+catboost=1.0.3=py37hf985489_0
+category-encoders=1.3.0=pypi_0
+certifi=2021.10.8=pypi_0
+cffi=1.15.0=py37h446072c_0
+chardet=4.0.0=py37hf985489_2
+charset-normalizer=2.0.7=pypi_0
+click=8.0.3=py37hf985489_1
+cloudpickle=2.0.0=pyhd8ed1ab_0
+colorama=0.4.4=pyh9f0ad1d_0
+cookiecutter=1.6.0=py37_1000
+cornac=1.14.1=pypi_0
+croniter=0.3.36=pyhd8ed1ab_0
+cryptography=35.0.0=py37h5e77fcc_2
+cycler=0.11.0=pyhd8ed1ab_0
+cymem=2.0.6=py37hd8d24ac_2
+cython-blis=0.7.5=py37h032687b_1
+cytoolz=0.11.2=py37h271585c_1
+dask=2021.10.0=pyhd8ed1ab_0
+dask-core=2021.10.0=pyhd8ed1ab_0
+dask-glm=0.2.0=py_1
+dask-ml=1.9.0=pyhd3eb1b0_0
+databricks-cli=0.16.2=pypi_0
+dataclasses=0.8=pyhc8e2a94_3
+debugpy=1.4.1=py37hd8d24ac_0
+decorator=4.4.2=py_0
+defusedxml=0.7.1=pyhd8ed1ab_0
+distributed=2021.10.0=py37hecd8cb5_0
+docker-py=5.0.3=py37hf985489_2
+docker-pycreds=0.4.0=py_0
+docutils=0.18.1=py37hf985489_0
+entrypoints=0.3=pyhd8ed1ab_1003
+enum34=1.1.10=pypi_0
+expat=2.4.1=he49afe7_0
+fastai=2.5.3=py_0
+fastcore=1.3.26=py_0
+fastdownload=0.0.5=py_0
+fastprogress=1.0.0=pyh39e3cac_0
+ffmpeg=4.4.1=h79e7b16_0
+filelock=3.3.2=pypi_0
+font-ttf-dejavu-sans-mono=2.37=hab24e00_0
+font-ttf-inconsolata=3.000=h77eed37_0
+font-ttf-source-code-pro=2.038=h77eed37_0
+font-ttf-ubuntu=0.83=hab24e00_0
+fontconfig=2.13.1=h10f422b_1005
+fonts-conda-ecosystem=1=0
+fonts-conda-forge=1=0
+freetype=2.10.4=h4cff582_1
+fribidi=1.0.10=hbcb3906_0
+fsspec=2021.11.1=pyhd8ed1ab_0
+future=0.18.2=py37hf985489_4
+gast=0.4.0=pyh9f0ad1d_0
+gdk-pixbuf=2.42.6=h2e6141f_0
+gettext=0.19.8.1=hd1a6beb_1008
+gflags=2.2.2=hb1e8313_1004
+giflib=5.2.1=hbcb3906_2
+gitdb=4.0.9=pyhd8ed1ab_0
+gitpython=3.1.24=pyhd8ed1ab_0
+glog=0.5.0=h25b26a9_0
+gmp=6.2.1=h2e338ed_0
+gnutls=3.6.13=h756fd2b_1
+google-auth=1.35.0=pyh6c4a22f_0
+google-auth-oauthlib=0.4.6=pyhd8ed1ab_0
+google-pasta=0.2.0=pyh8c360ce_0
+graphite2=1.3.13=h2e338ed_1001
+graphviz=2.50.0=h77de9ca_1
+grpc-cpp=1.39.1=h3acd2d4_1
+grpcio=1.39.0=py37hc728aa8_0
+gtk2=2.24.33=h675d97a_1
+gts=0.7.6=hccb3bdf_2
+h5py=3.1.0=nompi_py37hcd7841c_100
+harfbuzz=2.9.1=h159f659_1
+hdf5=1.10.6=nompi_hc5d9132_1114
+heapdict=1.0.1=py_0
+huggingface-hub=0.0.19=pypi_0
+icu=68.2=he49afe7_0
+idna=3.3=pypi_0
+imageio=2.9.0=py_0
+imageio-ffmpeg=0.4.5=pyhd8ed1ab_0
+imbalanced-learn=0.8.1=pyhd8ed1ab_0
+importlib-metadata=2.1.2=pypi_0
+importlib_metadata=4.8.1=hd8ed1ab_0
+importlib_resources=5.4.0=pyhd8ed1ab_0
+iniconfig=1.1.1=pypi_0
+ipykernel=6.4.2=py37h4c52d7d_0
+ipython=7.29.0=py37h4c52d7d_0
+ipython_genutils=0.2.0=py_1
+ipywidgets=7.6.5=pyhd8ed1ab_0
+jasper=1.900.1=h636a363_1006
+jbig=2.1=h0d85af4_2003
+jedi=0.18.0=py37hf985489_2
+jinja2=2.11.3=pypi_0
+jinja2-time=0.2.0=py_2
+jmespath=0.10.0=pyh9f0ad1d_0
+joblib=1.1.0=pyhd8ed1ab_0
+jpeg=9d=hbcb3906_0
+json5=0.9.5=pyh9f0ad1d_0
+jsonschema=4.1.2=pypi_0
+jupyter_client=7.0.6=pyhd8ed1ab_0
+jupyter_core=4.9.1=py37hf985489_0
+jupyter_server=1.11.2=pyhd8ed1ab_0
+jupyterlab=3.2.2=pyhd8ed1ab_0
+jupyterlab_pygments=0.1.2=pyh9f0ad1d_0
+jupyterlab_server=2.8.2=pyhd8ed1ab_0
+jupyterlab_widgets=1.0.2=pyhd8ed1ab_0
+keras=2.2.4=pypi_0
+keras-applications=1.0.8=py_1
+keras-preprocessing=1.1.2=pyhd8ed1ab_0
+kiwisolver=1.3.2=py37h737db71_1
+krb5=1.19.2=hcfbf3a7_3
+lame=3.100=h35c211d_1001
+langcodes=3.2.1=pyhd8ed1ab_0
+lcms2=2.12=h577c468_0
+lerc=3.0=he49afe7_0
+libblas=3.9.0=12_osx64_mkl
+libbrotlicommon=1.0.9=h0d85af4_6
+libbrotlidec=1.0.9=h0d85af4_6
+libbrotlienc=1.0.9=h0d85af4_6
+libcblas=3.9.0=12_osx64_mkl
+libcurl=7.79.1=hf45b732_1
+libcxx=12.0.1=habf9029_0
+libdeflate=1.8=h0d85af4_0
+libedit=3.1.20191231=h0678c8f_2
+libev=4.33=haf1e3a3_1
+libevent=2.1.10=h815e4d9_4
+libffi=3.4.2=he49afe7_4
+libflac=1.3.3=h046ec9c_1
+libgd=2.3.3=h311d3fc_0
+libgfortran=5.0.0=9_3_0_h6c81a4c_23
+libgfortran5=9.3.0=h6c81a4c_23
+libglib=2.70.2=hf1fb8c0_0
+libiconv=1.16=haf1e3a3_0
+liblapack=3.9.0=12_osx64_mkl
+liblapacke=3.9.0=12_osx64_mkl
+libllvm11=11.1.0=hd011deb_2
+libnghttp2=1.43.0=h6f36284_1
+libogg=1.3.4=h35c211d_1
+libopenblas=0.3.18=openmp_h3351f45_0
+libopencv=4.5.3=py37h7908e48_1
+libopus=1.3.1=hc929b4f_1
+libpng=1.6.37=h7cec526_2
+libprotobuf=3.16.0=hcf210ce_0
+librosa=0.8.1=pyhd8ed1ab_0
+librsvg=2.52.4=h02b643e_0
+libsndfile=1.0.31=he49afe7_1
+libsodium=1.0.18=hbcb3906_1
+libssh2=1.10.0=h52ee1ee_2
+libthrift=0.14.2=hab56fdc_1
+libtiff=4.3.0=hd146c10_2
+libtool=2.4.6=he49afe7_1008
+libutf8proc=2.6.1=h35c211d_0
+libuv=1.42.0=h0d85af4_0
+libvorbis=1.3.7=h046ec9c_0
+libvpx=1.11.0=he49afe7_3
+libwebp=1.2.1=h28dabe5_0
+libwebp-base=1.2.1=h0d85af4_0
+libxgboost=1.5.0=h4a89273_0
+libxml2=2.9.12=h93ec3fd_0
+libzlib=1.2.11=h9173be1_1013
+lightfm=1.16=pypi_0
+lightgbm=3.3.1=pypi_0
+llvm-openmp=12.0.1=hda6cdc1_1
+llvmlite=0.37.0=pypi_0
+locket=0.2.0=py_2
+lockfile=0.12.2=py_1
+luigi=3.0.3=py37hf985489_1
+lz4-c=1.9.3=he49afe7_1
+markdown=3.3.4=pyhd8ed1ab_0
+markupsafe=2.0.1=py37h271585c_1
+marshmallow=3.14.1=pyhd8ed1ab_0
+marshmallow-oneofschema=3.0.1=pyhd8ed1ab_0
+matplotlib=3.4.3=py37hf985489_1
+matplotlib-base=3.4.3=py37h3147e9e_1
+matplotlib-inline=0.1.3=pyhd8ed1ab_0
+memory-profiler=0.58.0=pypi_0
+mistune=0.8.4=py37h271585c_1005
+mkl=2021.4.0=h89fa619_689
+mkl-devel=2021.4.0=h694c41f_690
+mkl-include=2021.4.0=hf224eb6_689
+mmlspark=0.0.11111111=pypi_0
+moviepy=1.0.1=py_0
+mpmath=1.2.1=pypi_0
+msgpack-python=1.0.3=py37h737db71_0
+multidict=5.2.0=py37h271585c_1
+multipledispatch=0.6.0=py_0
+murmurhash=1.0.6=py37hd8d24ac_2
+mypy_extensions=0.4.3=py37hf985489_4
+natsort=8.0.2=pyhd8ed1ab_0
+nbclassic=0.3.4=pyhd8ed1ab_0
+nbclient=0.5.4=pyhd8ed1ab_0
+nbconvert=6.2.0=py37hf985489_0
+nbformat=5.1.3=pyhd8ed1ab_0
+ncurses=6.2=h2e338ed_4
+nest-asyncio=1.5.1=pyhd8ed1ab_0
+nettle=3.6=hedd7734_0
+ninja=1.10.2=h940c156_1
+nltk=3.6.5=pypi_0
+notebook=6.4.5=pyha770c72_0
+numba=0.54.1=py37h078fc1e_0
+numpy=1.19.5=py37h84c02c4_2
+oauthlib=3.1.1=pyhd8ed1ab_0
+olefile=0.46=pyh9f0ad1d_1
+opencv=4.5.3=py37hf985489_1
+opencv-python=4.5.4.58=pypi_0
+openh264=2.1.1=hfd3ada9_0
+openjpeg=2.4.0=h6e7aa92_1
+openssl=1.1.1l=h0d85af4_0
+opt_einsum=3.3.0=pyhd8ed1ab_1
+orc=1.6.10=hfe4c36d_0
+packaging=21.2=pypi_0
+pandas=1.3.4=pypi_0
+pandoc=2.16.1=h0d85af4_0
+pandocfilters=1.5.0=pyhd8ed1ab_0
+pango=1.48.10=ha05cd14_1
+papermill=2.3.3=pypi_0
+parquet-cpp=1.5.1=2
+parso=0.8.2=pyhd8ed1ab_0
+partd=1.2.0=pyhd8ed1ab_0
+pathspec=0.9.0=pypi_0
+pathy=0.6.1=pyhd8ed1ab_0
+patsy=0.5.2=pypi_0
+pcre=8.45=he49afe7_0
+pendulum=2.1.2=pyhd8ed1ab_1
+pexpect=4.8.0=pyh9f0ad1d_2
+pickle5=0.0.11=py37h271585c_1
+pickleshare=0.7.5=py_1003
+pillow=8.4.0=pypi_0
+pip=21.3.1=pyhd8ed1ab_0
+pixman=0.40.0=hbcb3906_0
+plaidml=0.7.0=pypi_0
+plaidml-keras=0.7.0=pypi_0
+platformdirs=2.4.0=pypi_0
+pluggy=1.0.0=pypi_0
+pooch=1.5.2=pyhd8ed1ab_0
+powerlaw=1.5=pypi_0
+poyo=0.5.0=py_0
+prefect=0.15.11=pyhd8ed1ab_0
+preshed=3.0.6=py37hd8d24ac_1
+proglog=0.1.9=py_0
+prometheus_client=0.5.0=py_0
+prompt-toolkit=3.0.21=pyha770c72_0
+protobuf=3.16.0=py37hd8d24ac_0
+psutil=5.8.0=py37h271585c_2
+ptyprocess=0.7.0=pyhd3deb0d_0
+py=1.11.0=pypi_0
+py-opencv=4.5.3=py37h4c52d7d_1
+py-xgboost=1.5.0=py37hf985489_0
+py4j=0.10.7=pypi_0
+pyaml=20.4.0=pyh9f0ad1d_0
+pyarrow=6.0.0=pypi_0
+pyasn1=0.4.8=py_0
+pyasn1-modules=0.2.7=py_0
+pycparser=2.21=pyhd8ed1ab_0
+pydantic=1.8.2=py37h271585c_2
+pydeck=0.5.0=pyh9f0ad1d_0
+pydocumentdb=2.3.5=pypi_0
+pygments=2.10.0=pyhd8ed1ab_0
+pyjwt=2.3.0=pyhd8ed1ab_0
+pymanopt=0.2.5=pypi_0
+pyopenssl=21.0.0=pyhd8ed1ab_0
+pypandoc=1.6.4=pyhd8ed1ab_0
+pyparsing=2.4.7=pypi_0
+pyrsistent=0.18.0=py37h271585c_0
+pysocks=1.7.1=py37hf985489_4
+pysoundfile=0.10.3.post1=pyhd3deb0d_0
+pyspark=2.4.0=py37_1000
+pytest=6.2.5=pypi_0
+pytest-runner=5.3.1=pypi_0
+python=3.7.12=haf480d7_100_cpython
+python-box=5.4.1=pyhd8ed1ab_0
+python-daemon=2.3.0=pyhd8ed1ab_1
+python-dateutil=2.8.2=pyhd8ed1ab_0
+python-flatbuffers=1.12=pyhd8ed1ab_1
+python-slugify=5.0.2=pyhd8ed1ab_0
+python-tzdata=2021.5=pyhd8ed1ab_0
+python_abi=3.7=2_cp37m
+pytorch=1.10.0=py3.7_0
+pytz=2021.3=pyhd8ed1ab_0
+pytz-deprecation-shim=0.1.0.post0=py37hf985489_1
+pytzdata=2020.1=pyh9f0ad1d_0
+pyu2f=0.1.5=pyhd8ed1ab_0
+pyyaml=5.4.1=pypi_0
+pyzmq=22.3.0=py37h8f778e5_0
+re2=2021.09.01=he49afe7_0
+readline=8.1=h05e3726_0
+recommenders=0.7.0=dev_0
+regex=2021.11.1=pypi_0
+requests=2.26.0=pyhd8ed1ab_0
+requests-oauthlib=1.3.0=pyh9f0ad1d_0
+resampy=0.2.2=py_0
+retrying=1.3.3=pypi_0
+rsa=4.7.2=pyh44b312d_0
+ruamel.yaml=0.17.17=py37h271585c_1
+ruamel.yaml.clib=0.2.6=py37h271585c_0
+s3transfer=0.5.0=pyhd8ed1ab_0
+sacremoses=0.0.46=pypi_0
+scikit-learn=0.24.2=pypi_0
+scikit-optimize=0.9.0=pyhd8ed1ab_0
+scikit-surprise=1.1.1=pypi_0
+scipy=1.7.1=py37h4e3cf02_0
+scrapbook=0.5.0=pypi_0
+seaborn=0.11.2=pypi_0
+send2trash=1.8.0=pyhd8ed1ab_0
+sentiment-classifier-ryanmccall=0.0.1=dev_0
+setuptools=58.4.0=py37hf985489_1
+shellingham=1.4.0=pyh44b312d_0
+six=1.15.0=pyh9f0ad1d_0
+smart_open=5.2.1=pyhd8ed1ab_0
+smmap=3.0.5=pyh44b312d_0
+snappy=1.1.8=hb1e8313_3
+sniffio=1.2.0=py37hf985489_2
+sortedcontainers=2.4.0=pyhd8ed1ab_0
+spacy=3.2.0=py37h326c9ff_0
+spacy-legacy=3.0.8=pyhd8ed1ab_0
+spacy-loggers=1.0.1=pyhd8ed1ab_0
+sqlite=3.36.0=h23a322b_2
+srsly=2.4.2=py37hd8d24ac_0
+statsmodels=0.13.0=pypi_0
+streamlit=0.81.1=pyhd8ed1ab_0
+svt-av1=0.8.7=he49afe7_1
+tabulate=0.8.9=pyhd8ed1ab_0
+tbb=2021.4.0=h940c156_1
+tblib=1.7.0=pyhd8ed1ab_0
+tenacity=8.0.1=pypi_0
+tensorboard=2.6.0=pyhd8ed1ab_1
+tensorboard-data-server=0.6.0=py37h5e77fcc_1
+tensorboard-plugin-wit=1.8.0=pyh44b312d_0
+tensorflow=2.6.0=py37hf471621_1
+tensorflow-addons=0.15.0=pypi_0
+tensorflow-base=2.6.0=py37hfa03454_1
+tensorflow-estimator=2.6.0=py37he6ea403_1
+tensorflow-hub=0.12.0=pypi_0
+tensorflowjs=3.11.0=pypi_0
+termcolor=1.1.0=py_2
+terminado=0.12.1=py37hf985489_1
+testpath=0.5.0=pyhd8ed1ab_0
+text-unidecode=1.3=py_0
+textwrap3=0.9.2=pypi_0
+thinc=8.0.12=py37h326c9ff_0
+threadpoolctl=3.0.0=pyh8a188c0_0
+titanic=0.1=dev_0
+tk=8.6.11=h5dbffcc_1
+tokenizers=0.10.3=pypi_0
+toml=0.10.2=pyhd8ed1ab_0
+tomli=1.2.2=pypi_0
+toolz=0.11.2=pyhd8ed1ab_0
+torchaudio=0.10.0=py37_cpu
+torchvision=0.11.1=py37_cpu
+tornado=6.1=py37h271585c_1
+tqdm=4.62.3=pyhd8ed1ab_0
+traitlets=5.1.1=pyhd8ed1ab_0
+transformers=4.12.2=pypi_0
+typed-ast=1.4.3=pypi_0
+typeguard=2.13.3=pypi_0
+typer=0.4.0=pyhd8ed1ab_0
+typing=3.10.0.0=pyhd8ed1ab_0
+typing-extensions=3.7.4.3=0
+typing_extensions=3.7.4.3=py_0
+tzdata=2021e=he74cb21_0
+tzlocal=4.1=py37hf985489_1
+unidecode=1.3.2=pyhd8ed1ab_0
+urllib3=1.26.7=pyhd8ed1ab_0
+validators=0.18.2=pyhd3deb0d_0
+vowpalwabbit=8.11.0=py37hd6556a3_1
+wasabi=0.8.2=pyh44b312d_0
+watchdog=2.1.6=py37hb9fb9c6_1
+watermark=2.2.0=pypi_0
+wcwidth=0.2.5=pyh9f0ad1d_2
+webencodings=0.5.1=py_1
+websocket-client=0.57.0=py37hf985489_6
+werkzeug=2.0.1=pyhd8ed1ab_0
+wheel=0.37.0=pyhd8ed1ab_1
+whichcraft=0.6.1=py_0
+widgetsnbextension=3.5.2=py37hf985489_0
+wrapt=1.12.1=py37h271585c_3
+x264=1!161.3030=h0d85af4_1
+x265=3.5=h940c156_1
+xgboost=1.5.0=py37h3f6e5c9_0
+xlearn=0.40a1=pypi_0
+xz=5.2.5=haf1e3a3_1
+yaml=0.2.5=haf1e3a3_0
+yarl=1.7.2=py37h271585c_1
+zeromq=4.3.4=he49afe7_1
+zict=2.0.0=py_0
+zipp=3.6.0=pyhd8ed1ab_0
+zlib=1.2.11=h9173be1_1013
+zstd=1.5.0=h582d3a0_0

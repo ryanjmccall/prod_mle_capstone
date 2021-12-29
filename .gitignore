@@ -1,7 +1,4 @@
 capstone/notebooks/data/
-modules/module_14_5/data/
-modules/module_17_2/
-modules/module_20/data/
 capstone/notebooks/dask-worker-space/
 
 # Byte-compiled / optimized / DLL files
