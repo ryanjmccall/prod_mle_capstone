@@ -12,10 +12,21 @@ The requirements.txt was generated from a conda environment.
 Install this Python package with 
 `cd X/prod_mle_capstone && pip install -e .`
 
+`mkdir logs`
+
+`export PYTHONPATH=$PYTHONPATH:/Users/home/PycharmProjects/prod_mle_capstone`
+TODO: figure out why editable package not being found
+
 ## Testing
 
 From repo root run:
 `pytest tests`
+
+## Running
+
+Run the ML training pipeline from CL:
+
+`python src/sentiment_classifier/pipeline.py -v`
 
 ## Docker
 

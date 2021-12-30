@@ -1,4 +1,4 @@
-capstone/notebooks/data/
+data/
 capstone/notebooks/dask-worker-space/
 
 # Byte-compiled / optimized / DLL files
