@@ -8,6 +8,7 @@ The requirements.txt was generated from a conda environment.
 - `conda create --name py37 python=3.7 --file requirements.txt`
 - `conda activate py37`
 - (FYI `conda list --export > requirements.txt`)
+- TODO: create the environment from scratch to ensure minimality
 
 Install this Python package with 
 `cd X/prod_mle_capstone && pip install -e .`
