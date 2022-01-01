@@ -8,7 +8,8 @@ The requirements.txt was generated from a conda environment.
 - `conda create --name py37 python=3.7 --file requirements.txt`
 - `conda activate py37`
 - (FYI `conda list --export > requirements.txt`)
-- TODO: create the environment from scratch to ensure minimality
+- TODO: recreate the environment from scratch 
+- to ensure minimality producing new requirements.txt
 
 Install this Python package with 
 `cd X/prod_mle_capstone && pip install -e .`
@@ -16,7 +17,6 @@ Install this Python package with
 `mkdir logs`
 
 `export PYTHONPATH=$PYTHONPATH:/Users/home/PycharmProjects/prod_mle_capstone`
-TODO: figure out why editable package not being found
 
 ## Testing
 
@@ -26,15 +26,13 @@ From repo root run:
 ## Running
 
 Run the ML training pipeline from CL:
+`python src/sentiment_classifier/pipeline.py`
 
-`python src/sentiment_classifier/pipeline.py -v`
+Optionally, run a Bayes optimized hyperparameter search instead of model 
+training/testing:
+`python src/sentiment_classifier/pipeline.py --search`
 
 ## Docker
-
-TBD
-
-
-## Prefect Orchestration
 
 TBD
 
