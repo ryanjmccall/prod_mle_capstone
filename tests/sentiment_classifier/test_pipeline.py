@@ -22,27 +22,27 @@ class TestPipeline(unittest.TestCase):
         conf = dict()
         # TODO
 
-        result = pipe.run_bayes_search.run(df, conf)
+        # result = pipe.run_bayes_search.run(df, conf)
 
     def test_train_test_model_task(self):
         df = pd.DataFrame([])
         conf = dict()
         # TODO
 
-        model, metrics = pipe.train_test_model.run(df, conf)
+        # model, metrics = pipe.train_test_model.run(df, conf)
 
     def test_get_ml_pipeline(self):
         conf = dict()
         # TODO
 
-        ml_pipeline = pipe.get_ml_pipeline(conf)
+        # ml_pipeline = pipe.get_ml_pipeline(conf)
 
     def test_eval_parallel_pred_task(self):
         model = RandomForestClassifier()
         df = pd.DataFrame([])
         # TODO
 
-        elapsed, predictions = pipe.eval_parallel_pred.run(model, df)
+        # elapsed, predictions = pipe.eval_parallel_pred.run(model, df)
 
     def test_record_results_task(self):
         data_dir = ''
@@ -50,7 +50,7 @@ class TestPipeline(unittest.TestCase):
         config = dict()
         metrics = dict()
 
-        pipe.record_results.run(data_dir, model, config, metrics)
+        # pipe.record_results.run(data_dir, model, config, metrics)
 
         # TODO assert files are stored in data_dir
 

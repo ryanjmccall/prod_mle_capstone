@@ -1,4 +1,4 @@
-from skopt.space import Real, Categorical, Integer
+from skopt.space import Real, Integer
 
 RANDOM_STATE = 0
 
@@ -10,6 +10,7 @@ DAG_CONFIG = dict(
     # extract_features
     audio_limit=5 * 22050,  # 5 sec * sr
     mel_window_length=8,
+    n_mels=128,
     mfcc_window_length=512,
     n_mfcc=20,
     chroma_window_length=32,

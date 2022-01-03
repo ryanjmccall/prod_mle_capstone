@@ -38,5 +38,3 @@ class TestCheckpoint(unittest.TestCase):
         result = load_checkpoint.run(self.checkpoint_dir)
 
         assert self.df.equals(result)
-
-    # TODO error cases

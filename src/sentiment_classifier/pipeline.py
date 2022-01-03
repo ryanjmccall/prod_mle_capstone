@@ -1,17 +1,18 @@
 import argparse
 from datetime import datetime
+from importlib import import_module
 import json
 import os
 import time
 from typing import Tuple
 
 import dask.array as da
-import numpy as np
 from dask_ml.wrappers import ParallelPostFit
 from imblearn.over_sampling import ADASYN
 from imblearn.pipeline import Pipeline
 from joblib import dump
 import lightgbm as lgb
+import numpy as np
 import pandas as pd
 import prefect
 from prefect import case, task, Flow, Parameter
@@ -26,7 +27,6 @@ from skopt import BayesSearchCV
 from skopt.callbacks import TimerCallback
 
 from sentiment_classifier.task.extract import extract_features
-from sentiment_classifier.config import DAG_CONFIG
 from sentiment_classifier.context import DATA_DIR, DF_DIR
 from sentiment_classifier.task.meld_wrangling import convert_mp4_to_wav, load_labels, add_audio_to_labels
 from sentiment_classifier.task.checkpoint import checkpoint_exists, load_checkpoint, write_checkpoint
@@ -140,15 +140,15 @@ def record_results(data_dir: str, model: BaseEstimator, dag_config: dict, metric
         json.dump(record, f)
 
 
-def get_flow(args) -> Flow:
+def get_flow(dag_config: dict, run_search: bool) -> Flow:
     with Flow('sentiment_classifier_ETL') as flow:
         # Specify ETL DAG to prefect within context manager
 
         # Define constants
         data_dir = Parameter('data_dir', default=DATA_DIR)
         df_dir = Parameter('df_dir', default=DF_DIR)
-        dag_config = Parameter('dag_config', default=DAG_CONFIG)  # could be specified by clarg
-        run_search = Parameter('run_search', default=args.search)
+        dag_config = Parameter('dag_config', default=dag_config)
+        run_search = Parameter('run_search', default=run_search)
 
         # Build DAG
         df_checkpoint = checkpoint_exists(df_dir)
@@ -183,6 +183,11 @@ def get_flow(args) -> Flow:
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        '-c', '--config',
+        help='Python path to DAG config. config dict expected to be named DAG_CONFIG.',
+        default='sentiment_classifier.config.default_config'
+    )
+    parser.add_argument(
         '-s', '--search',
         help='run model hyperparameter search instead of model training',
         action='store_true'
@@ -193,10 +198,13 @@ def get_args():
 def run_pipeline():
     args = get_args()
 
-    # Use threads since these tasks make use of libraries like numpy, pandas,
-    # amd scikit-learn that release the GIL
+    config_module = import_module(args.config)
+    dag_config = getattr(config_module, 'DAG_CONFIG')
+
+    # Use threads since the prefect tasks make use of libraries like numpy, pandas,
+    # and scikit-learn that release the GIL
     executor = LocalDaskExecutor(scheduler='threads')
-    flow = get_flow(args)
+    flow = get_flow(dag_config=dag_config, run_search=args.search)
     flow.run(executor=executor)
 
 
