@@ -27,14 +27,13 @@ From repo root run:
 
 ## Running
 
-Run the ML training pipeline from CL:
+Run the ML training pipeline from CL to prepare the data and train a model:
 `python src/sentiment_classifier/pipeline.py`
 
-# TODO argument to specify the path to the CONFIG
-
-Optionally, run a Bayes optimized hyperparameter search instead of model 
-training/testing:
+Instead of training a model, run a Bayesian hyperparameter search:
 `python src/sentiment_classifier/pipeline.py --search`
+
+in either case, the results are stored to `data/results/*`
 
 ## Docker
 
