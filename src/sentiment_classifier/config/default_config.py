@@ -8,13 +8,15 @@ N_JOBS = -1
 
 DAG_CONFIG = dict(
     # extract_features
-    audio_limit=5 * 22050,  # 5 sec * sr
-    mel_window_length=8,
-    n_mels=128,
-    mfcc_window_length=512,
-    n_mfcc=20,
-    chroma_window_length=32,
-    n_chroma=12,
+    extract=dict(
+        audio_limit=5 * 22050,  # 5 sec * sr
+        mel_window_length=8,
+        n_mels=128,
+        mfcc_window_length=512,
+        n_mfcc=20,
+        chroma_window_length=32,
+        n_chroma=12
+    ),
 
     # train_test_model
     test_size=0.2,
@@ -27,7 +29,7 @@ DAG_CONFIG = dict(
     ),
 
     decomposition=dict(
-        pca_components=50,
+        n_components=50,
         random_state=RANDOM_STATE
     ),
 
@@ -58,7 +60,7 @@ DAG_CONFIG = dict(
     ),
 
     bayes_search=dict(
-        n_iter=5,  # iterations of Bayesian optimization to run
+        n_iter=1,  # iterations of Bayesian optimization to run
         scoring='f1_weighted',
         n_jobs=-1,
         n_points=1,   # number of parameter settings to sample in parallel (per iteration)

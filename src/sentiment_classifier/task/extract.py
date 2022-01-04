@@ -5,8 +5,9 @@ from prefect import task
 
 
 @task(name='extract_features')
-def extract_features(df: pd.DataFrame, conf: dict) -> pd.DataFrame:
+def extract_features(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
     """Extract librosa features from audio based on supplied config."""
+    conf = dag_conf['extract']
     audio_limit = conf['audio_limit']
     mel_window_length = conf['mel_window_length']
     n_mels = conf['n_mels']
@@ -16,6 +17,9 @@ def extract_features(df: pd.DataFrame, conf: dict) -> pd.DataFrame:
     n_chroma = conf['n_chroma']
 
     def extract_helper(r):
+        if r.audio is None or r.sr is None:
+            raise ValueError('Row audio/sr cannot be None')
+
         audio = r.audio[:audio_limit]
         return np.hstack((
             extract_melspectrogram(audio, r.sr, mel_window_length, n_mels),

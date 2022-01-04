@@ -13,6 +13,13 @@ class TestExtract(unittest.TestCase):
         self.data = [[list(range(100)), 10],
                      [list(reversed(range(100))), 10]]
         self.X = np.array(range(1000), dtype=np.float32)
+        self.conf = dict(extract=dict(audio_limit=2,
+                                      mel_window_length=1,
+                                      n_mels=2,
+                                      mfcc_window_length=2,
+                                      n_mfcc=3,
+                                      chroma_window_length=4,
+                                      n_chroma=5))
 
     @patch('sentiment_classifier.task.extract.extract_chroma')
     @patch('sentiment_classifier.task.extract.extract_mfcc')
@@ -22,15 +29,8 @@ class TestExtract(unittest.TestCase):
         mock_mfcc.return_value = [2]
         mock_chroma.return_value = [3]
         df = pd.DataFrame(self.data, columns=['audio', 'sr'])
-        conf = dict(audio_limit=2,
-                    mel_window_length=1,
-                    n_mels=2,
-                    mfcc_window_length=2,
-                    n_mfcc=3,
-                    chroma_window_length=4,
-                    n_chroma=5)
 
-        df = extract_features.run(df, conf)
+        df = extract_features.run(df, self.conf)
 
         mock_mel.assert_has_calls(
             [call([0, 1], 10, 1, 2),
@@ -48,6 +48,12 @@ class TestExtract(unittest.TestCase):
         assert len(df.features.values) == 2
         assert df.features.values[0].tolist() == [1, 2, 3]
         assert df.features.values[1].tolist() == [1, 2, 3]
+
+    def test_extract_features_task_no_audio_raises_error(self):
+        df = pd.DataFrame([[None, None]], columns=['audio', 'sr'])
+
+        with self.assertRaises(ValueError):
+            extract_features.run(df, self.conf)
 
     def test_extract_melspectrogram(self):
         result = extract_melspectrogram(self.X, sr=10, win_length=32, n_mels=128)

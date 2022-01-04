@@ -45,27 +45,30 @@ def prepare_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @task(name='run_bayes_search', log_stdout=True)
-def run_bayes_search(df: pd.DataFrame, conf: dict) -> None:
+def run_bayes_search(df: pd.DataFrame, conf: dict) -> Tuple[BaseEstimator, dict]:
     log = prefect.context.get('logger')
 
-    X = df.features
+    X = np.array([x for x in df['features']])
     y = df.negativity
     cbs = [TimerCallback()]
     pipe = get_ml_pipeline(conf)
-    opt = BayesSearchCV(estimator=pipe, **conf['bayes_search'])
+    search = BayesSearchCV(estimator=pipe, **conf['bayes_search'])
 
-    search = opt.fit(X, y, callback=cbs)
+    search.fit(X, y, callback=cbs)
 
     iter_times = cbs[0].iter_time
     log.info(f'elapsed time: {sum(iter_times) / 60:.2f}m ave-iter={np.mean(iter_times):.2f}s')
-    log.info('best search params: %s', search.best_params_)
+    model = search.best_estimator_ if hasattr(search, 'best_estimator_') else None
+    params = search.best_params_ if hasattr(search, 'best_params_') else None
+    return model, params
 
 
 @task(name='train_model', log_stdout=True)
 def train_test_model(df: pd.DataFrame, conf: dict) -> Tuple[BaseEstimator, dict]:
     log = prefect.context.get('logger')
-    X = df.features
+    X = np.array([x for x in df['features']])
     y = df.negativity
+    log.info('X shape %s y shape %s', X.shape, y.shape)
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
@@ -125,7 +128,7 @@ def dupe_data(X, duplication: int):
 
 
 @task(name='record_results', log_stdout=True)
-def record_results(data_dir: str, model: BaseEstimator, dag_config: dict, metrics: dict) -> None:
+def record_results(data_dir: str, model: BaseEstimator, dag_config: dict, metrics: dict) -> str:
     """Save model, config, and metrics of the current DAG run."""
     log = prefect.context.get('logger')
     dt = str(datetime.now())
@@ -135,9 +138,13 @@ def record_results(data_dir: str, model: BaseEstimator, dag_config: dict, metric
 
     log.info('Recording results to %s', results_path)
     dump(model, filename=os.path.join(results_path, 'model.joblib'))
+    # TODO convert the skopt space objects to lists
+    dag_config['bayes_search']['search_spaces'] = None
     record = dict(dag_config=dag_config, metrics=metrics)
     with open(os.path.join(results_path, 'record.json'), 'w', encoding='utf8') as f:
         json.dump(record, f)
+
+    return results_path
 
 
 def get_flow(dag_config: dict, run_search: bool) -> Flow:
@@ -157,6 +164,7 @@ def get_flow(dag_config: dict, run_search: bool) -> Flow:
             wavs_dirs = convert_mp4_to_wav(data_dir)
             labels_dfs = load_labels(data_dir)
             df_true = add_audio_to_labels(wavs_dirs, labels_dfs)
+            df_true = prepare_data(df_true)
             df_true = extract_features(df_true, dag_config)
             write_checkpoint(df_true, df_dir)
 
@@ -168,14 +176,15 @@ def get_flow(dag_config: dict, run_search: bool) -> Flow:
         df = merge(df_true, df_false)
 
         # Now either run hyperparam search or train/test a model
-        df = prepare_data(df)
         with case(run_search, True):
-            run_bayes_search(df, dag_config)
+            model1, metrics1 = run_bayes_search(df, dag_config)
 
         with case(run_search, False):
-            model, metrics = train_test_model(df, dag_config)
-            eval_parallel_pred(model, df)
-            record_results(data_dir, model, dag_config, metrics)
+            model2, metrics2 = train_test_model(df, dag_config)
+
+        model = merge(model1, model2)
+        metrics = merge(metrics1, metrics2)
+        record_results(data_dir, model, dag_config, metrics)
 
     return flow
 

@@ -2,9 +2,9 @@ import os
 from typing import List
 
 import librosa
+from moviepy import editor as mp
 import pandas as pd
 import prefect
-from moviepy import editor as mp
 from prefect import task
 
 from sentiment_classifier.util import listdir_ext, unique_fname
@@ -62,17 +62,15 @@ def convert_mp4_to_wav(data_dir: str) -> List[str]:
 
 @task(name='load_data_labels')
 def load_labels(data_dir: str) -> List[pd.DataFrame]:
-    # TODO try using for-loops
-    train_df = pd.read_csv(os.path.join(data_dir, 'labels', 'train_labels.csv'))
-    dev_df = pd.read_csv(os.path.join(data_dir, 'labels', 'dev_labels.csv'))
-    test_df = pd.read_csv(os.path.join(data_dir, 'labels', 'test_labels.csv'))
+    dfs = [pd.read_csv(os.path.join(data_dir, 'labels', file))
+           for file in ('train_labels.csv', 'dev_labels.csv', 'test_labels.csv')]
 
-    # construct unique ID
     cols = ['Dialogue_ID', 'Utterance_ID']
-    train_df['dia_utt'] = train_df[cols].apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
-    dev_df['dia_utt'] = dev_df[cols].apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
-    test_df['dia_utt'] = test_df[cols].apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
-    return [train_df, dev_df, test_df]
+    for df in dfs:
+        # construct unique ID
+        df['dia_utt'] = df[cols].apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
+
+    return dfs
 
 
 @task(name='add_audio_to_labels', log_stdout=True)

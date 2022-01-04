@@ -25,5 +25,3 @@ class TestUtil(unittest.TestCase):
 
     def test_listdir_ext_py(self):
         assert list(listdir_ext(ROOT_DIR, 'py'))
-
-    # TODO corner cases?
