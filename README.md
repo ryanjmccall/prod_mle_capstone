@@ -17,7 +17,7 @@ Install the `sentiment_classifier` Python package within this repo by running fr
 ### Creating the requirements.txt
 For reference the requirements.txt file was created with the following commands:
 - `conda create --name prod python=3.7`
-- Run `conda install -c conda-forge -y dask dask-ml imbalanced-learn joblib librosa lightgbm moviepy numpy pandas prefect psycopg2 pytest scikit-learn scikit-optimize sqlalchemy`
+- Run `conda install -c conda-forge -y dask dask-ml flask imbalanced-learn joblib librosa lightgbm moviepy numpy pandas prefect psycopg2 pytest scikit-learn scikit-optimize sqlalchemy`
 - `conda list --export > requirements.txt`
 
 ## Testing
@@ -39,6 +39,7 @@ in either case, the results are stored to `data/results/*`
 
 TBD
 
-## Flask API with Gunicorn
+## Flask API 
+`cd src/sentiment_classifier/prediction_app`
+`flask run`
 
-TBD

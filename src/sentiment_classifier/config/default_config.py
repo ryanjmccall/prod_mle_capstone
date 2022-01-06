@@ -1,21 +1,28 @@
 from skopt.space import Real, Integer
 
+
 RANDOM_STATE = 0
-
-
 N_JOBS = -1
+
+AUDIO_LIMIT = 5 * 22050  # 5 sec * sr
+MEL_WINDOW_LENGTH = 8
+N_MELS = 128
+MFCC_WINDOW_LENGTH = 512
+N_MFCC = 20
+CHROMA_WINDOW_LENGTH = 32
+N_CHROMA = 12
 
 
 DAG_CONFIG = dict(
     # extract_features
     extract=dict(
-        audio_limit=5 * 22050,  # 5 sec * sr
-        mel_window_length=8,
-        n_mels=128,
-        mfcc_window_length=512,
-        n_mfcc=20,
-        chroma_window_length=32,
-        n_chroma=12
+        audio_limit=AUDIO_LIMIT,
+        mel_window_length=MEL_WINDOW_LENGTH,
+        n_mels=N_MELS,
+        mfcc_window_length=MFCC_WINDOW_LENGTH,
+        n_mfcc=N_MFCC,
+        chroma_window_length=CHROMA_WINDOW_LENGTH,
+        n_chroma=N_CHROMA
     ),
 
     # train_test_model

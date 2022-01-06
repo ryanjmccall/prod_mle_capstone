@@ -25,7 +25,7 @@ class TestPipeline(unittest.TestCase):
     def test_prepare_data_task(self):
         df = pd.DataFrame(['Negative', None, 'positive', None],
                           columns=['Sentiment'])
-
+        
         result = pipe.prepare_data.run(df)
 
         assert list(result.negativity) == [1, 0]

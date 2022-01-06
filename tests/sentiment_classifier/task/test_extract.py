@@ -4,7 +4,7 @@ from unittest.mock import patch, call
 import numpy as np
 import pandas as pd
 
-from sentiment_classifier.task.extract import extract_features, extract_melspectrogram, extract_mfcc, extract_chroma
+from sentiment_classifier.task.extract import extract_features_task, extract_melspectrogram, extract_mfcc, extract_chroma
 
 
 class TestExtract(unittest.TestCase):
@@ -30,7 +30,7 @@ class TestExtract(unittest.TestCase):
         mock_chroma.return_value = [3]
         df = pd.DataFrame(self.data, columns=['audio', 'sr'])
 
-        df = extract_features.run(df, self.conf)
+        df = extract_features_task.run(df, self.conf)
 
         mock_mel.assert_has_calls(
             [call([0, 1], 10, 1, 2),
@@ -53,7 +53,7 @@ class TestExtract(unittest.TestCase):
         df = pd.DataFrame([[None, None]], columns=['audio', 'sr'])
 
         with self.assertRaises(ValueError):
-            extract_features.run(df, self.conf)
+            extract_features_task.run(df, self.conf)
 
     def test_extract_melspectrogram(self):
         result = extract_melspectrogram(self.X, sr=10, win_length=32, n_mels=128)

@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 from prefect import task
 
+from sentiment_classifier.config.default_config import *
+
 
 @task(name='extract_features')
-def extract_features(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
+def extract_features_task(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
     """Extract librosa features from audio based on supplied config."""
     conf = dag_conf['extract']
     audio_limit = conf['audio_limit']
@@ -20,15 +22,32 @@ def extract_features(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
         if r.audio is None or r.sr is None:
             raise ValueError('Row audio/sr cannot be None')
 
-        audio = r.audio[:audio_limit]
-        return np.hstack((
-            extract_melspectrogram(audio, r.sr, mel_window_length, n_mels),
-            extract_mfcc(audio, r.sr, mfcc_window_length, n_mfcc),
-            extract_chroma(audio, r.sr, chroma_window_length, n_chroma)
-        ))
+        return extract_features(r.audio, r.sr, audio_limit,
+                                mel_window_length, n_mels,
+                                mfcc_window_length, n_mfcc,
+                                chroma_window_length, n_chroma)
 
     df['features'] = df.apply(extract_helper, axis=1)
     return df
+
+
+def extract_features(
+    audio,
+    sr,
+    audio_limit=AUDIO_LIMIT,
+    mel_window_length=MEL_WINDOW_LENGTH,
+    n_mels=N_MELS,
+    mfcc_window_length=MFCC_WINDOW_LENGTH,
+    n_mfcc=N_MFCC,
+    chroma_window_length=CHROMA_WINDOW_LENGTH,
+    n_chroma=N_CHROMA
+):
+    audio = audio[:int(audio_limit)]
+    return np.hstack((
+        extract_melspectrogram(audio, sr, mel_window_length, n_mels),
+        extract_mfcc(audio, sr, mfcc_window_length, n_mfcc),
+        extract_chroma(audio, sr, chroma_window_length, n_chroma)
+    ))
 
 
 def extract_melspectrogram(X, sr, win_length, n_mels):

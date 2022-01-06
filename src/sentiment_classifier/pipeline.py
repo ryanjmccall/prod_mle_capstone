@@ -26,7 +26,7 @@ from sklearn.preprocessing import QuantileTransformer
 from skopt import BayesSearchCV
 from skopt.callbacks import TimerCallback
 
-from sentiment_classifier.task.extract import extract_features
+from sentiment_classifier.task.extract import extract_features_task
 from sentiment_classifier.context import DATA_DIR, DF_DIR
 from sentiment_classifier.task.meld_wrangling import convert_mp4_to_wav, load_labels, add_audio_to_labels
 from sentiment_classifier.task.checkpoint import checkpoint_exists, load_checkpoint, write_checkpoint
@@ -165,7 +165,7 @@ def get_flow(dag_config: dict, run_search: bool) -> Flow:
             labels_dfs = load_labels(data_dir)
             df_true = add_audio_to_labels(wavs_dirs, labels_dfs)
             df_true = prepare_data(df_true)
-            df_true = extract_features(df_true, dag_config)
+            df_true = extract_features_task(df_true, dag_config)
             write_checkpoint(df_true, df_dir)
 
         with case(df_checkpoint, True):
