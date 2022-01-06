@@ -51,16 +51,18 @@ def run_bayes_search(df: pd.DataFrame, conf: dict) -> Tuple[BaseEstimator, dict]
     X = np.array([x for x in df['features']])
     y = df.negativity
     cbs = [TimerCallback()]
-    pipe = get_ml_pipeline(conf)
+    pipe = get_train_pipeline(conf)
     search = BayesSearchCV(estimator=pipe, **conf['bayes_search'])
 
     search.fit(X, y, callback=cbs)
 
     iter_times = cbs[0].iter_time
     log.info(f'elapsed time: {sum(iter_times) / 60:.2f}m ave-iter={np.mean(iter_times):.2f}s')
-    model = search.best_estimator_ if hasattr(search, 'best_estimator_') else None
-    params = search.best_params_ if hasattr(search, 'best_params_') else None
-    return model, params
+    # TODO fix UT mocking and remove hasattr
+    params = search.best_params_ if hasattr(search, 'best_params_') else dict()
+    # TODO does BayesSearchCV contain the best model after search.fit? doubtful, probably want to set it
+    # before returning the pipeline
+    return pipe, params
 
 
 @task(name='train_model', log_stdout=True)
@@ -78,24 +80,28 @@ def train_test_model(df: pd.DataFrame, conf: dict) -> Tuple[BaseEstimator, dict]
     )
     log.info('Train items: %s, Test items: %s', len(y_train), len(y_test))
 
-    pipe = get_ml_pipeline(conf)
+    pipe = get_train_pipeline(conf)
     pipe.fit(X_train, y_train)
     train_score = f1_score(y_train, pipe.predict(X_train), average='weighted')
     test_score = f1_score(y_test, pipe.predict(X_test), average='weighted')
-
     log.info('Train f1 score %s, Test f1 score %s', train_score, test_score)
 
     metrics = {'f1_score': {'train': train_score, 'test': test_score}}
-    return pipe['model'], metrics
+    return pipe, metrics
 
 
-def get_ml_pipeline(conf: dict) -> Pipeline:
+def get_train_pipeline(conf: dict) -> Pipeline:
     return Pipeline([
         ('standardize', QuantileTransformer(**conf['standardize'])),
         ('decomposition', PCA(**conf['decomposition'])),
         ('oversample', ADASYN(**conf['oversample'])),
         ('model', lgb.LGBMClassifier(**conf['model'])),
     ])
+
+
+def get_predict_pipeline(train_pipeline) -> Pipeline:
+    del train_pipeline.steps[2]  # don't want oversampling for prediction
+    return train_pipeline
 
 
 @task(name='evaluate_parallel_prediction', log_stdout=True)
@@ -128,19 +134,24 @@ def dupe_data(X, duplication: int):
 
 
 @task(name='record_results', log_stdout=True)
-def record_results(data_dir: str, model: BaseEstimator, dag_config: dict, metrics: dict) -> str:
+def record_results(data_dir: str, train_pipe: Pipeline, dag_config: dict, metadata: dict) -> str:
     """Save model, config, and metrics of the current DAG run."""
+    # TODO consider using MLFlow OS library (https://mlflow.org/) to record "ML lifecycle"
     log = prefect.context.get('logger')
     dt = str(datetime.now())
     results_path = os.path.join(data_dir, 'results', dt)
     if not os.path.exists(results_path):
         os.makedirs(results_path)
+    log.info('Recording DAG run results to: %s', results_path)
 
-    log.info('Recording results to %s', results_path)
-    dump(model, filename=os.path.join(results_path, 'model.joblib'))
-    # TODO convert the skopt space objects to lists
+    predict_pipe = get_predict_pipeline(train_pipe)
+    pipe_path = os.path.join(results_path, 'prediction_pipeline.joblib')
+    dump(predict_pipe, filename=pipe_path)
+    log.info('Prediction pipeline saved to: %s', pipe_path)
+
+    # TODO convert the skopt space objects to lists, for now just omit them
     dag_config['bayes_search']['search_spaces'] = None
-    record = dict(dag_config=dag_config, metrics=metrics)
+    record = dict(dag_config=dag_config, metadata=metadata)
     with open(os.path.join(results_path, 'record.json'), 'w', encoding='utf8') as f:
         json.dump(record, f)
 
@@ -177,14 +188,14 @@ def get_flow(dag_config: dict, run_search: bool) -> Flow:
 
         # Now either run hyperparam search or train/test a model
         with case(run_search, True):
-            model1, metrics1 = run_bayes_search(df, dag_config)
+            train_pipe_1, metadata_1 = run_bayes_search(df, dag_config)
 
         with case(run_search, False):
-            model2, metrics2 = train_test_model(df, dag_config)
+            train_pipe_2, metadata_2 = train_test_model(df, dag_config)
 
-        model = merge(model1, model2)
-        metrics = merge(metrics1, metrics2)
-        record_results(data_dir, model, dag_config, metrics)
+        train_pipe = merge(train_pipe_1, train_pipe_2)
+        metadata = merge(metadata_1, metadata_2)
+        record_results(data_dir, train_pipe, dag_config, metadata)
 
     return flow
 
@@ -198,7 +209,8 @@ def get_args():
     )
     parser.add_argument(
         '-s', '--search',
-        help='run model hyperparameter search instead of model training',
+        help='run model hyperparameter search instead of model training. '
+             'will not output production-ready prediction pipeline',
         action='store_true'
     )
     return parser.parse_args()

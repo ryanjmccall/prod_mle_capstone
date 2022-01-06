@@ -1,25 +1,34 @@
 import os
+import time
 
+from flask import Flask, request, render_template, jsonify, flash
+from joblib import load
 import librosa
-from flask import Flask, flash, request, redirect, url_for, render_template, jsonify
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename, redirect
 
 from sentiment_classifier.task.extract import extract_features
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'uploads')
-ALLOWED_EXTENSIONS = {'wav', 'txt'}
-
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
-
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 
-def _allowed_file(filename: str) -> bool:
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+_PIPELINE = load('artifacts/prediction_pipeline.joblib')
+
+
+_ALLOWED_EXTENSIONS = {'wav', 'm4a'}
+
+
+def allowed_file(filename: str) -> bool:
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in _ALLOWED_EXTENSIONS
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 @app.route('/upload')
@@ -30,27 +39,36 @@ def upload_file():
 @app.route('/uploader', methods=['GET', 'POST'])
 def uploader():
     if request.method == 'POST':
-        f = request.files['file']
-        filename = secure_filename(f.filename)
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
 
-        # TODO call _allowed_file m4a, wav etc.
+        uploaded_file = request.files['file']
+        if uploaded_file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
 
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        f.save(save_path)
+        filename = secure_filename(uploaded_file.filename)
+        if allowed_file(filename):
+            start = time.time()
+            save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            uploaded_file.save(save_path)
 
-        # TODO can I simply take the file from the request object?
-        audio, sr = librosa.load(save_path)
+            # hit errors, but seems I can get the file directly from uploaded_file.stream ?
+            # https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
+            # audio, sr = librosa.load(uploaded_file.stream.read())
 
-        features = extract_features(audio, sr)
+            audio, sr = librosa.load(save_path)
+            os.remove(save_path)
+            features = extract_features(audio, sr)  # could be pulled into the Pipeline
+            prediction = _PIPELINE.predict(features.reshape(1, -1)).tolist()
+            elapsed = round(time.time() - start, 6)
+            return jsonify({'audio_len': len(audio),
+                            'audio_sr': sr,
+                            'negative_sentiment_prediction': prediction[0],
+                            'processing_time': elapsed})
 
-        # TODO I have to pickle the fitted standardizer, PCA, and model then load them here
-        # and run them all?
-        # ('standardize', QuantileTransformer(**conf['standardize'])),
-        # ('decomposition', PCA(**conf['decomposition'])),
-        # ('model', lgb.LGBMClassifier(**conf['model'])),
-
-        return jsonify({'negative': True, 'audio_len': len(audio), 'sr': sr,
-                        'features': features.tolist()})
+    return render_template('upload.html')
 
 
 if __name__ == '__main__':

@@ -6,11 +6,14 @@ from unittest.mock import patch
 
 import pandas as pd
 import skopt
+from imblearn.over_sampling import ADASYN
 from sklearn.base import BaseEstimator
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import QuantileTransformer
 from skopt.space import Integer
 
-import sentiment_classifier.pipeline as pipe
+from sentiment_classifier.pipeline import get_predict_pipeline, get_train_pipeline, prepare_data, run_bayes_search, \
+    train_test_model, record_results
 from sentiment_classifier.config.default_config import DAG_CONFIG
 from sentiment_classifier.context import ROOT_DIR
 
@@ -26,7 +29,7 @@ class TestPipeline(unittest.TestCase):
         df = pd.DataFrame(['Negative', None, 'positive', None],
                           columns=['Sentiment'])
         
-        result = pipe.prepare_data.run(df)
+        result = prepare_data.run(df)
 
         assert list(result.negativity) == [1, 0]
         assert list(result.Sentiment) == ['Negative', 'positive']
@@ -44,12 +47,12 @@ class TestPipeline(unittest.TestCase):
             )
         )
 
-        pipe.run_bayes_search.run(self.sample_df, conf)
+        run_bayes_search.run(self.sample_df, conf)
 
         mock_fit.assert_called_once()
 
     def test_train_test_model_task(self):
-        model, metrics = pipe.train_test_model.run(self.sample_df, DAG_CONFIG)
+        model, metrics = train_test_model.run(self.sample_df, DAG_CONFIG)
 
         assert isinstance(model, BaseEstimator)
         assert 'f1_score' in metrics
@@ -58,20 +61,31 @@ class TestPipeline(unittest.TestCase):
         assert 'test' in metrics['f1_score']
         assert metrics['f1_score']['test'] <= 1.0
 
-    def test_get_ml_pipeline(self):
-        conf = DAG_CONFIG
+    def test_get_train_pipeline(self):
+        pipe = get_train_pipeline(DAG_CONFIG)
 
-        ml_pipeline = pipe.get_ml_pipeline(conf)
+        objs = [obj for name, obj in pipe.steps]
+        assert len(objs) == 4
+        assert isinstance(objs[0], QuantileTransformer)
+        assert isinstance(objs[1], PCA)
+        assert isinstance(objs[2], ADASYN)
+        assert isinstance(objs[3], BaseEstimator)
 
-        assert len(ml_pipeline) == 4
-        assert isinstance(ml_pipeline[-1], BaseEstimator)
+    def test_get_predict_pipeline(self):
+        pipe = get_predict_pipeline(get_train_pipeline(DAG_CONFIG))
+
+        objs = [obj for name, obj in pipe.steps]
+        assert len(pipe) == 3
+        assert isinstance(objs[0], QuantileTransformer)
+        assert isinstance(objs[1], PCA)
+        assert isinstance(objs[2], BaseEstimator)
 
     def test_record_results_task(self):
-        model = RandomForestClassifier()
+        pipe = get_predict_pipeline(get_train_pipeline(DAG_CONFIG))
         config = DAG_CONFIG
-        metrics = {'metrics': True}
+        metadata = dict()
 
-        out_path = pipe.record_results.run(self.test_data_path, model, config, metrics)
+        out_path = record_results.run(self.test_data_path, pipe, config, metadata)
 
-        assert list(sorted(os.listdir(out_path))) == ['model.joblib', 'record.json']
+        assert list(sorted(os.listdir(out_path))) == ['prediction_pipeline.joblib', 'record.json']
         shutil.rmtree(out_path)

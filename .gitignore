@@ -1,6 +1,6 @@
 data/
-results/
-capstone/notebooks/dask-worker-space/
+src/sentiment_classifier/prediction_app/uploads
+src/sentiment_classifier/prediction_app/artifacts
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
