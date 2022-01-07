@@ -12,14 +12,17 @@ from sentiment_classifier.task.extract import extract_features
 
 
 dictConfig(PREDICTION_LOG_CONFIG)
+PATH_TO_HERE = os.path.dirname(os.path.realpath(__file__))
+
+
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(PATH_TO_HERE, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 
-_PIPELINE = load('artifacts/prediction_pipeline.joblib')
+_PIPELINE = load(os.path.join(PATH_TO_HERE, 'artifacts/prediction_pipeline.joblib'))
 
 
 _ALLOWED_EXTENSIONS = {'wav', 'm4a'}
@@ -79,4 +82,5 @@ def uploader():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    # app.run(debug=True)
+    app.run(debug=False)
