@@ -23,7 +23,8 @@ def convert_mp4_to_wav(data_dir: str) -> List[str]:
     Because of file namespace collisions, outputs wavs to following structure:
     - data_dir/audio/[train|dev|test]
     """
-    log = prefect.context.get('logger')
+    logger = prefect.context.get('logger')
+
     dest_paths = []
     exceptions = []
     converted = 0
@@ -36,7 +37,7 @@ def convert_mp4_to_wav(data_dir: str) -> List[str]:
             os.makedirs(dest_path)
 
         finished_fnames = set(f.split('.')[0] for f in listdir_ext(dest_path, 'wav'))
-        log.info('Found %s converted .wav files in %s', len(finished_fnames), dest_path)
+        logger.info('Found %s converted .wav files in %s', len(finished_fnames), dest_path)
 
         src_path = os.path.join(data_dir, 'raw', dir_)
         mp4_paths = (os.path.join(src_path, f) for f in listdir_ext(src_path, 'mp4'))
@@ -56,15 +57,20 @@ def convert_mp4_to_wav(data_dir: str) -> List[str]:
                 # one dataset file was found to be corrupt
                 exceptions.append(e)
 
-    log.info('Converted %s files and had %s exceptions(s): \n%s', converted, len(exceptions), exceptions)
+    logger.info('Converted %s files and had %s exceptions(s): \n%s', converted, len(exceptions), exceptions)
     return dest_paths
 
 
 @task(name='load_data_labels')
 def load_labels(data_dir: str) -> List[pd.DataFrame]:
+    """Loads the MELD data labels and constructs unique ids which correspond to audio files."""
+    logger = prefect.context.get('logger')
+
+    logger.info('Loading MELD label csvs')
     dfs = [pd.read_csv(os.path.join(data_dir, 'labels', file))
            for file in ('train_labels.csv', 'dev_labels.csv', 'test_labels.csv')]
 
+    logger.info('Adding uid column to dfs')
     cols = ['Dialogue_ID', 'Utterance_ID']
     for df in dfs:
         # construct unique ID
@@ -76,18 +82,19 @@ def load_labels(data_dir: str) -> List[pd.DataFrame]:
 @task(name='add_audio_to_labels', log_stdout=True)
 def add_audio_to_labels(wav_dirs: str, label_dfs: List[pd.DataFrame]) -> pd.DataFrame:
     """For each row in labels DataFrame, load corresponding audio and add it to the DataFrame."""
-    log = prefect.context.get('logger')
+    logger = prefect.context.get('logger')
+
     dfs = []
     for wav_dir, df in zip(wav_dirs, label_dfs):
-        log.info('Joining audio from %s to labels df of size %s', wav_dir, len(df))
+        logger.info('Joining audio from %s to labels df of size %s', wav_dir, len(df))
         audios, srs = [], []
         for uid in df['dia_utt']:
             path = os.path.join(wav_dir, uid + '.wav')
             if os.path.exists(path):
-                log.debug('Loading wav %s', path)
+                logger.debug('Loading wav %s', path)
                 audio, sr = librosa.load(path)
             else:
-                log.warning('Wav not found at: %s', path)
+                logger.warning('Wav not found at: %s', path)
                 audio = None
                 sr = None
 
@@ -98,4 +105,6 @@ def add_audio_to_labels(wav_dirs: str, label_dfs: List[pd.DataFrame]) -> pd.Data
         df['sr'] = srs
         dfs.append(df)
 
-    return pd.concat(dfs)
+    combine_df = pd.concat(dfs)
+    logger.info('Combined train-dev-test into df of size %s', len(combine_df))
+    return combine_df

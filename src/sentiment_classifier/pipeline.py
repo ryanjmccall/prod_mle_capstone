@@ -1,93 +1,10 @@
-import argparse
-from datetime import datetime
-from importlib import import_module
-import json
-import os
-import time
-from typing import Tuple
+from copy import deepcopy
 
-import dask.array as da
-from dask_ml.wrappers import ParallelPostFit
+import lightgbm as lgb
 from imblearn.over_sampling import ADASYN
 from imblearn.pipeline import Pipeline
-from joblib import dump
-import lightgbm as lgb
-import numpy as np
-import pandas as pd
-import prefect
-from prefect import case, task, Flow, Parameter
-from prefect.executors import LocalDaskExecutor
-from prefect.tasks.control_flow import merge
-from sklearn.base import BaseEstimator
 from sklearn.decomposition import PCA
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import f1_score
 from sklearn.preprocessing import QuantileTransformer
-from skopt import BayesSearchCV
-from skopt.callbacks import TimerCallback
-
-from sentiment_classifier.task.extract import extract_features_task
-from sentiment_classifier.context import DATA_DIR, DF_DIR
-from sentiment_classifier.task.meld_wrangling import convert_mp4_to_wav, load_labels, add_audio_to_labels
-from sentiment_classifier.task.checkpoint import checkpoint_exists, load_checkpoint, write_checkpoint
-
-
-@task(name='prepare_data', log_stdout=True)
-def prepare_data(df: pd.DataFrame) -> pd.DataFrame:
-    log = prefect.context.get('logger')
-    before = len(df)
-    df.dropna(inplace=True)
-    log.info('dropped na changed items from %s -> %s', before, len(df))
-
-    # create binary negativity variable
-    df['negativity'] = df.Sentiment.apply(lambda x: 1 if x.lower() == 'negative' else 0)
-    return df
-
-
-@task(name='run_bayes_search', log_stdout=True)
-def run_bayes_search(df: pd.DataFrame, conf: dict) -> Tuple[BaseEstimator, dict]:
-    log = prefect.context.get('logger')
-
-    X = np.array([x for x in df['features']])
-    y = df.negativity
-    cbs = [TimerCallback()]
-    pipe = get_train_pipeline(conf)
-    search = BayesSearchCV(estimator=pipe, **conf['bayes_search'])
-
-    search.fit(X, y, callback=cbs)
-
-    iter_times = cbs[0].iter_time
-    log.info(f'elapsed time: {sum(iter_times) / 60:.2f}m ave-iter={np.mean(iter_times):.2f}s')
-    # TODO fix UT mocking and remove hasattr
-    params = search.best_params_ if hasattr(search, 'best_params_') else dict()
-    # TODO does BayesSearchCV contain the best model after search.fit? doubtful, probably want to set it
-    # before returning the pipeline
-    return pipe, params
-
-
-@task(name='train_model', log_stdout=True)
-def train_test_model(df: pd.DataFrame, conf: dict) -> Tuple[BaseEstimator, dict]:
-    log = prefect.context.get('logger')
-    X = np.array([x for x in df['features']])
-    y = df.negativity
-    log.info('X shape %s y shape %s', X.shape, y.shape)
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=conf['test_size'],
-        stratify=y,
-        random_state=conf['random_state']
-    )
-    log.info('Train items: %s, Test items: %s', len(y_train), len(y_test))
-
-    pipe = get_train_pipeline(conf)
-    pipe.fit(X_train, y_train)
-    train_score = f1_score(y_train, pipe.predict(X_train), average='weighted')
-    test_score = f1_score(y_test, pipe.predict(X_test), average='weighted')
-    log.info('Train f1 score %s, Test f1 score %s', train_score, test_score)
-
-    metrics = {'f1_score': {'train': train_score, 'test': test_score}}
-    return pipe, metrics
 
 
 def get_train_pipeline(conf: dict) -> Pipeline:
@@ -100,134 +17,12 @@ def get_train_pipeline(conf: dict) -> Pipeline:
 
 
 def get_predict_pipeline(train_pipeline) -> Pipeline:
-    del train_pipeline.steps[2]  # don't want oversampling for prediction
-    return train_pipeline
+    predict_pipeline = deepcopy(train_pipeline)
+    if len(predict_pipeline.steps) < 3:
+        raise ValueError('Unexpected pipeline size')
+    step_name, _ = predict_pipeline.steps[2]
+    if step_name != 'oversample':
+        raise ValueError('Expected oversample step but was %s', step_name)
 
-
-@task(name='evaluate_parallel_prediction', log_stdout=True)
-def eval_parallel_pred(model, df, duplication=5) -> Tuple[float, int]:
-    """Evaluate parallelized prediction using Dask."""
-    log = prefect.context.get('logger')
-    X = df.features
-    y = df.negativity
-    parallel_model = ParallelPostFit(model, scoring='accuracy')
-    parallel_model.fit(X, y)
-
-    X_large = dupe_data(X, duplication)
-    y_large = dupe_data(y, duplication)
-
-    start = time.time()
-    model.score(X_large, y_large)
-    finish = time.time()
-    elapsed = finish - start
-    predictions = X_large.shape[0]
-
-    log.info(f'elapsed  {elapsed:.3f} s')
-    log.info(f'items    {predictions:,}')
-    log.info(f'per item {elapsed / predictions * 1e6:.3f} us')
-    return elapsed, predictions
-
-
-def dupe_data(X, duplication: int):
-    return da.concatenate([da.from_array(X.to_numpy(), chunks=X.shape)
-                           for _ in range(duplication)])
-
-
-@task(name='record_results', log_stdout=True)
-def record_results(data_dir: str, train_pipe: Pipeline, dag_config: dict, metadata: dict) -> str:
-    """Save model, config, and metrics of the current DAG run."""
-    # TODO consider using MLFlow OS library (https://mlflow.org/) to record "ML lifecycle"
-    log = prefect.context.get('logger')
-    dt = str(datetime.now())
-    results_path = os.path.join(data_dir, 'results', dt)
-    if not os.path.exists(results_path):
-        os.makedirs(results_path)
-    log.info('Recording DAG run results to: %s', results_path)
-
-    predict_pipe = get_predict_pipeline(train_pipe)
-    pipe_path = os.path.join(results_path, 'prediction_pipeline.joblib')
-    dump(predict_pipe, filename=pipe_path)
-    log.info('Prediction pipeline saved to: %s', pipe_path)
-
-    # TODO convert the skopt space objects to lists, for now just omit them
-    dag_config['bayes_search']['search_spaces'] = None
-    record = dict(dag_config=dag_config, metadata=metadata)
-    with open(os.path.join(results_path, 'record.json'), 'w', encoding='utf8') as f:
-        json.dump(record, f)
-
-    return results_path
-
-
-def get_flow(dag_config: dict, run_search: bool) -> Flow:
-    with Flow('sentiment_classifier_ETL') as flow:
-        # Specify ETL DAG to prefect within context manager
-
-        # Define constants
-        data_dir = Parameter('data_dir', default=DATA_DIR)
-        df_dir = Parameter('df_dir', default=DF_DIR)
-        dag_config = Parameter('dag_config', default=dag_config)
-        run_search = Parameter('run_search', default=run_search)
-
-        # Build DAG
-        df_checkpoint = checkpoint_exists(df_dir)
-        with case(df_checkpoint, False):
-            # Rebuild the dataset Dataframe from original MELD data
-            wavs_dirs = convert_mp4_to_wav(data_dir)
-            labels_dfs = load_labels(data_dir)
-            df_true = add_audio_to_labels(wavs_dirs, labels_dfs)
-            df_true = prepare_data(df_true)
-            df_true = extract_features_task(df_true, dag_config)
-            write_checkpoint(df_true, df_dir)
-
-        with case(df_checkpoint, True):
-            # Load dataset Dataframe from checkpoint
-            df_false = load_checkpoint(df_dir)
-
-        # Join rebuild-load workflows
-        df = merge(df_true, df_false)
-
-        # Now either run hyperparam search or train/test a model
-        with case(run_search, True):
-            train_pipe_1, metadata_1 = run_bayes_search(df, dag_config)
-
-        with case(run_search, False):
-            train_pipe_2, metadata_2 = train_test_model(df, dag_config)
-
-        train_pipe = merge(train_pipe_1, train_pipe_2)
-        metadata = merge(metadata_1, metadata_2)
-        record_results(data_dir, train_pipe, dag_config, metadata)
-
-    return flow
-
-
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-c', '--config',
-        help='Python path to DAG config. config dict expected to be named DAG_CONFIG.',
-        default='sentiment_classifier.config.default_config'
-    )
-    parser.add_argument(
-        '-s', '--search',
-        help='run model hyperparameter search instead of model training. '
-             'will not output production-ready prediction pipeline',
-        action='store_true'
-    )
-    return parser.parse_args()
-
-
-def run_pipeline():
-    args = get_args()
-
-    config_module = import_module(args.config)
-    dag_config = getattr(config_module, 'DAG_CONFIG')
-
-    # Use threads since the prefect tasks make use of libraries like numpy, pandas,
-    # and scikit-learn that release the GIL
-    executor = LocalDaskExecutor(scheduler='threads')
-    flow = get_flow(dag_config=dag_config, run_search=args.search)
-    flow.run(executor=executor)
-
-
-if __name__ == '__main__':
-    run_pipeline()
+    del predict_pipeline.steps[2]  # don't want oversampling for prediction
+    return predict_pipeline

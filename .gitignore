@@ -1,6 +1,6 @@
 data/
-src/sentiment_classifier/prediction_app/uploads
-src/sentiment_classifier/prediction_app/artifacts
+src/sentiment_classifier/prediction/uploads
+src/sentiment_classifier/prediction/artifacts
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,5 +1,4 @@
 import os
-import shutil
 import unittest
 from copy import deepcopy
 from unittest.mock import patch
@@ -12,8 +11,9 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import QuantileTransformer
 from skopt.space import Integer
 
-from sentiment_classifier.pipeline import get_predict_pipeline, get_train_pipeline, prepare_data, run_bayes_search, \
-    train_test_model, record_results
+from sentiment_classifier.run_dag import prepare_data, run_bayes_search, \
+    train_test_model
+from sentiment_classifier.pipeline import get_train_pipeline, get_predict_pipeline
 from sentiment_classifier.config.default_config import DAG_CONFIG
 from sentiment_classifier.context import ROOT_DIR
 
@@ -80,12 +80,8 @@ class TestPipeline(unittest.TestCase):
         assert isinstance(objs[1], PCA)
         assert isinstance(objs[2], BaseEstimator)
 
-    def test_record_results_task(self):
-        pipe = get_predict_pipeline(get_train_pipeline(DAG_CONFIG))
-        config = DAG_CONFIG
-        metadata = dict()
-
-        out_path = record_results.run(self.test_data_path, pipe, config, metadata)
-
-        assert list(sorted(os.listdir(out_path))) == ['prediction_pipeline.joblib', 'record.json']
-        shutil.rmtree(out_path)
+    def test_get_predict_pipeline_wrong_size(self):
+        pipe = get_train_pipeline(DAG_CONFIG)
+        del pipe.steps[2:]
+        with self.assertRaises(ValueError):
+            get_predict_pipeline(pipe)

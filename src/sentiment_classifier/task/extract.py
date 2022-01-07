@@ -1,14 +1,17 @@
 import librosa
 import numpy as np
 import pandas as pd
+import prefect
 from prefect import task
 
-from sentiment_classifier.config.default_config import *
+from sentiment_classifier.config.default_config import (
+    AUDIO_LIMIT, MEL_WINDOW_LENGTH, N_MELS, MFCC_WINDOW_LENGTH, N_MFCC, CHROMA_WINDOW_LENGTH, N_CHROMA
+)
 
 
-@task(name='extract_features')
+@task(name='extract_features', log_stdout=True)
 def extract_features_task(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
-    """Extract librosa features from audio based on supplied config."""
+    """Extract librosa features from df of audio based on supplied config."""
     conf = dag_conf['extract']
     audio_limit = conf['audio_limit']
     mel_window_length = conf['mel_window_length']
@@ -19,6 +22,7 @@ def extract_features_task(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
     n_chroma = conf['n_chroma']
 
     def extract_helper(r):
+        """Helper to extract features from df row"""
         if r.audio is None or r.sr is None:
             raise ValueError('Row audio/sr cannot be None')
 
@@ -27,6 +31,8 @@ def extract_features_task(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
                                 mfcc_window_length, n_mfcc,
                                 chroma_window_length, n_chroma)
 
+    logger = prefect.context.get('logger')
+    logger.info('Extracting features to "features" df column')
     df['features'] = df.apply(extract_helper, axis=1)
     return df
 
@@ -41,7 +47,8 @@ def extract_features(
     n_mfcc=N_MFCC,
     chroma_window_length=CHROMA_WINDOW_LENGTH,
     n_chroma=N_CHROMA
-):
+) -> np.ndarray:
+    """Extracts librosa features from a single audio signal."""
     audio = audio[:int(audio_limit)]
     return np.hstack((
         extract_melspectrogram(audio, sr, mel_window_length, n_mels),

@@ -1,3 +1,4 @@
+from logging.config import dictConfig
 import os
 import time
 
@@ -6,9 +7,11 @@ from joblib import load
 import librosa
 from werkzeug.utils import secure_filename, redirect
 
+from sentiment_classifier.prediction.log_config import PREDICTION_LOG_CONFIG
 from sentiment_classifier.task.extract import extract_features
 
 
+dictConfig(PREDICTION_LOG_CONFIG)
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
@@ -40,11 +43,13 @@ def upload_file():
 def uploader():
     if request.method == 'POST':
         if 'file' not in request.files:
-            flash('No file part')
+            app.logger.info('No file part in request')
+            flash('No file part in request')
             return redirect(request.url)
 
         uploaded_file = request.files['file']
         if uploaded_file.filename == '':
+            app.logger.info('No selected file')
             flash('No selected file')
             return redirect(request.url)
 
@@ -67,6 +72,8 @@ def uploader():
                             'audio_sr': sr,
                             'negative_sentiment_prediction': prediction[0],
                             'processing_time': elapsed})
+        else:
+            app.logger.info('Rejecting disallowed file %s', filename)
 
     return render_template('upload.html')
 
