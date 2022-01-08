@@ -13,7 +13,7 @@ from skopt.space import Integer
 
 from sentiment_classifier.run_dag import prepare_data, run_bayes_search, \
     train_test_model
-from sentiment_classifier.pipeline import get_train_pipeline, get_predict_pipeline
+from sentiment_classifier.pipeline import get_train_pipeline, get_prediction_pipeline
 from sentiment_classifier.config.default_config import DAG_CONFIG
 from sentiment_classifier.context import ROOT_DIR
 
@@ -71,17 +71,11 @@ class TestPipeline(unittest.TestCase):
         assert isinstance(objs[2], ADASYN)
         assert isinstance(objs[3], BaseEstimator)
 
-    def test_get_predict_pipeline(self):
-        pipe = get_predict_pipeline(get_train_pipeline(DAG_CONFIG))
+    def test_get_first_two_steps(self):
+        pipe = get_prediction_pipeline(get_train_pipeline(DAG_CONFIG))
 
         objs = [obj for name, obj in pipe.steps]
         assert len(pipe) == 3
         assert isinstance(objs[0], QuantileTransformer)
         assert isinstance(objs[1], PCA)
         assert isinstance(objs[2], BaseEstimator)
-
-    def test_get_predict_pipeline_wrong_size(self):
-        pipe = get_train_pipeline(DAG_CONFIG)
-        del pipe.steps[2:]
-        with self.assertRaises(ValueError):
-            get_predict_pipeline(pipe)

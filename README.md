@@ -35,11 +35,17 @@ Instead of training a model, run a Bayesian hyperparameter search:
 
 in either case, the results are stored to `data/results/*`
 
-## Docker
-
-TBD
-
 ## Flask API 
-`cd src/sentiment_classifier/prediction_app`
-`flask run`
+To run flask locally
+`export FLASK_APP='src/sentiment_classifier/prediction/wsgi.py' && export FLASK_ENV=development && flask run`
+
+## Docker
+From the repo root run:
+`docker image build -t prediction_app .`
+
+Then either:
+`docker run -d -p 80:5000 prediction_app`
+
+or: 
+`docker-compose up -d`
 

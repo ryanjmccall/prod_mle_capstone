@@ -2,13 +2,15 @@ from copy import deepcopy
 
 import lightgbm as lgb
 from imblearn.over_sampling import ADASYN
-from imblearn.pipeline import Pipeline
+from imblearn.pipeline import Pipeline as ImbalancedPipeline
+from sklearn.pipeline import Pipeline
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import QuantileTransformer
 
 
-def get_train_pipeline(conf: dict) -> Pipeline:
-    return Pipeline([
+def get_train_pipeline(conf: dict) -> ImbalancedPipeline:
+    """Get predetermined ML training pipeline."""
+    return ImbalancedPipeline([
         ('standardize', QuantileTransformer(**conf['standardize'])),
         ('decomposition', PCA(**conf['decomposition'])),
         ('oversample', ADASYN(**conf['oversample'])),
@@ -16,13 +18,8 @@ def get_train_pipeline(conf: dict) -> Pipeline:
     ])
 
 
-def get_predict_pipeline(train_pipeline) -> Pipeline:
-    predict_pipeline = deepcopy(train_pipeline)
-    if len(predict_pipeline.steps) < 3:
-        raise ValueError('Unexpected pipeline size')
-    step_name, _ = predict_pipeline.steps[2]
-    if step_name != 'oversample':
-        raise ValueError('Expected oversample step but was %s', step_name)
-
-    del predict_pipeline.steps[2]  # don't want oversampling for prediction
-    return predict_pipeline
+def get_prediction_pipeline(pipe) -> Pipeline:
+    """Gets the production prediction pipeline without oversampling"""
+    copy = deepcopy(pipe)
+    del copy.steps[2]
+    return Pipeline(steps=copy.steps)

@@ -7,7 +7,7 @@ from imblearn.pipeline import Pipeline
 from joblib import dump
 from prefect import task
 
-from sentiment_classifier.pipeline import get_predict_pipeline
+from sentiment_classifier.pipeline import get_prediction_pipeline
 
 
 @task(name='record_results', log_stdout=True)
@@ -21,15 +21,15 @@ def record_results(data_dir: str, train_pipe: Pipeline, dag_config: dict, metada
 
     dt = str(datetime.now())
     results_path = os.path.join(data_dir, 'results', dt)
+    logger.info('Recording DAG run results to: %s', results_path)
     if not os.path.exists(results_path):
         os.makedirs(results_path)
 
-    logger.info('Recording DAG run results to: %s', results_path)
-
-    predict_pipe = get_predict_pipeline(train_pipe)
+    # Save the pipeline in two parts: the sklearn objects and the lgbm classifier
+    pred_pipe = get_prediction_pipeline(train_pipe)
     pipe_path = os.path.join(results_path, 'prediction_pipeline.joblib')
-    dump(predict_pipe, filename=pipe_path)
-    logger.info('Prediction pipeline saved to: %s', pipe_path)
+    dump(pred_pipe, filename=pipe_path)
+    logger.info('Prediction pipeline prefix saved to: %s', pipe_path)
 
     # TODO convert the skopt space objects to lists, for now just omit them
     dag_config['bayes_search']['search_spaces'] = None

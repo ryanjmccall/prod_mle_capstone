@@ -4,7 +4,8 @@ from unittest.mock import patch, call
 import numpy as np
 import pandas as pd
 
-from sentiment_classifier.task.extract import extract_features_task, extract_melspectrogram, extract_mfcc, extract_chroma
+from sentiment_classifier.task.extract import extract_features_task
+from sentiment_classifier.task.extract_helper import extract_melspectrogram, extract_mfcc, extract_chroma
 
 
 class TestExtract(unittest.TestCase):
@@ -21,9 +22,9 @@ class TestExtract(unittest.TestCase):
                                       chroma_window_length=4,
                                       n_chroma=5))
 
-    @patch('sentiment_classifier.task.extract.extract_chroma')
-    @patch('sentiment_classifier.task.extract.extract_mfcc')
-    @patch('sentiment_classifier.task.extract.extract_melspectrogram')
+    @patch('sentiment_classifier.task.extract_helper.extract_chroma')
+    @patch('sentiment_classifier.task.extract_helper.extract_mfcc')
+    @patch('sentiment_classifier.task.extract_helper.extract_melspectrogram')
     def test_extract_features_task(self, mock_mel, mock_mfcc, mock_chroma):
         mock_mel.return_value = [1]
         mock_mfcc.return_value = [2]
