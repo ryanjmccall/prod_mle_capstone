@@ -49,3 +49,5 @@ Then either:
 or: 
 `docker-compose up -d`
 
+Then navigate to:
+http://127.0.0.1/upload

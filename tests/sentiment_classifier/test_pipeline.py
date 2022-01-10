@@ -11,8 +11,8 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import QuantileTransformer
 from skopt.space import Integer
 
-from sentiment_classifier.run_dag import prepare_data, run_bayes_search, \
-    train_test_model
+from sentiment_classifier.run_dag import prepare_data
+from sentiment_classifier.task.training import run_bayes_search, train_test_model
 from sentiment_classifier.pipeline import get_train_pipeline, get_prediction_pipeline
 from sentiment_classifier.config.default_config import DAG_CONFIG
 from sentiment_classifier.context import ROOT_DIR

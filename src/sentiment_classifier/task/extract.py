@@ -7,7 +7,7 @@ from sentiment_classifier.task.extract_helper import extract_features
 
 @task(name='extract_features', log_stdout=True)
 def extract_features_task(df: pd.DataFrame, dag_conf: dict) -> pd.DataFrame:
-    """Extract librosa features from df of audio based on supplied config."""
+    """Extract librosa features from df audio based on given config."""
     conf = dag_conf['extract']
     audio_limit = conf['audio_limit']
     mel_window_length = conf['mel_window_length']
