@@ -2,9 +2,16 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Hello</title>
+        <title>Upload Audio File</title>
     </head>
     <body>
-      <p>Go to /upload to upload a file.</p>
+      <h1>Upload Audio File</h1>
+      <p>Upload an audio file for negative sentiment prediction.
+      Only .wav files are supported.
+      </p>
+      <form method="POST" action="" enctype="multipart/form-data">
+          <input type="file" name="file">
+          <input type="submit" value="Submit">
+    </form>
    </body>
 </html>

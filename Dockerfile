@@ -1,6 +1,8 @@
 # base image
 FROM python:3.7
 
+EXPOSE 5000/tcp
+
 # set container working directory
 WORKDIR /workdir
 
@@ -18,6 +20,7 @@ COPY src/ .
 ENV FLASK_APP=sentiment_classifier/prediction/wsgi.py
 ENV FLASK_ENV=development
 ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5000
 
 # command to run on container start
 CMD ["flask", "run"]

@@ -3,6 +3,6 @@ services:
   myflaskwebservice:
     build: .
     ports:
-      - "80:5000"
+      - "5000:5000"
     volumes:
       - .:/workdir/sentiment_classifier/prediction/wsgi
