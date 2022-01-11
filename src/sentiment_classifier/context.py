@@ -1,15 +1,15 @@
 import os
 
 
-# sentiment_classifier package root
+#: sentiment_classifier package root
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-# data directory
+#: MELD dataset directory
 DATA_DIR = os.path.join(ROOT_DIR, '../../data')
 
 
-# checkpointed df directory
+#: features checkpoint directory
 DF_DIR = os.path.join(DATA_DIR, 'features')
 
 

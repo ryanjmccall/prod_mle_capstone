@@ -14,9 +14,20 @@ from sentiment_classifier.task.checkpoint import checkpoint_exists, load_checkpo
 from sentiment_classifier.task.record import record_results
 from sentiment_classifier.task.training import run_bayes_search, train_test_model
 
+"""
+run_dag.py
+======================
+The entry point to run the ML ETL Pipeline.
+"""
+
 
 @task(name='prepare_data', log_stdout=True)
 def prepare_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Prepares given MELD dataset for ML training.
+
+    :param df: DataFrame containing the MELD dataset labels and audio.
+    :return: cleaned Dataframe
+    """
     logger = prefect.context.get('logger')
 
     before = len(df)
@@ -29,7 +40,13 @@ def prepare_data(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def get_flow(dag_config: dict, run_search: bool) -> Flow:
+def get_flow(dag_config: dict, run_search: bool = False) -> Flow:
+    """Gets the prefect Flow containing the DAG to be run.
+
+    :param dag_config: comprehensive configuration of all parameters in the ETL DAG
+    :param run_search: whether to run hyperparamter search, if false, model training will be run.
+    :return: a prefect Flow
+    """
     with Flow('sentiment_classifier_ETL') as flow:
         # Specify ETL DAG to prefect within context manager
 
@@ -72,6 +89,7 @@ def get_flow(dag_config: dict, run_search: bool) -> Flow:
 
 
 def get_args():
+    """Parses command line arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-c', '--config',
@@ -88,6 +106,7 @@ def get_args():
 
 
 def main():
+    """Main entry point to run prefect DAG"""
     args = get_args()
     config_module = import_module(args.config)
     dag_config = getattr(config_module, 'DAG_CONFIG')

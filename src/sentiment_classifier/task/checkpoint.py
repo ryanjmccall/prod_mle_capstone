@@ -7,16 +7,17 @@ import prefect
 from prefect import task
 
 
-CHECKPOINT_DF_FNAME = 'checkpoint.sqlite'
+_CHECKPOINT_DF_FNAME = 'checkpoint.sqlite'
 _SQLITE_CHECKPOINT_TABLE_NAME = 'df_checkpoint'
 _SQLITE_CHECKPOINT_INDEX_LABEL = 'index'
 
 
 @task(name='write_checkpoint', log_stdout=True)
 def write_checkpoint(df: pd.DataFrame, path: str):
-    """Saves Dataframe as sqlite table at given path.
+    """Saves Dataframe to sqlite table at given path.
 
-    Could be extended to access SQL database server.
+    :param df: Dataframe containing processed features
+    :param path: directory where checkpoint will be written
     """
     logger = prefect.context.get('logger')
     if not os.path.exists(path):
@@ -36,16 +37,24 @@ def _sqlite_conn(checkpoint_dir: str):
 
 @task(name='checkpoint_exists', log_stdout=True)
 def checkpoint_exists(path: str) -> bool:
-    """Returns true if feature df checkpoint is available."""
+    """Returns whether feature df checkpoint is available.
+
+    :param path: checkpoint directory
+    :return: True if a checkpoint exists at path
+    """
     logger = prefect.context.get('logger')
-    exists = os.path.exists(os.path.join(path, CHECKPOINT_DF_FNAME))
+    exists = os.path.exists(os.path.join(path, _CHECKPOINT_DF_FNAME))
     logger.info('Feature df checkpoint available: %s', exists)
     return exists
 
 
 @task(name='load_checkpoint')
 def load_checkpoint(path: str) -> pd.DataFrame:
-    """Loads feature-df checkpoint from SQLite table."""
+    """Loads feature-df checkpoint from SQLite table.
+
+    :param path: checkpoint directory
+    :return: Loaded dataframe
+    """
     con = _sqlite_conn(path)
     qry = 'SELECT * FROM ' + _SQLITE_CHECKPOINT_TABLE_NAME
     df = pd.read_sql(qry, con, index_col=_SQLITE_CHECKPOINT_INDEX_LABEL)

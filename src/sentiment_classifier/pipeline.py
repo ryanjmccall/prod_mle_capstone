@@ -8,18 +8,26 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import QuantileTransformer
 
 
-def get_train_pipeline(conf: dict) -> ImbalancedPipeline:
-    """Get predetermined ML training pipeline."""
+def get_train_pipeline(dag_config: dict) -> ImbalancedPipeline:
+    """Get predetermined ML training pipeline.
+
+    :param dag_config: DAG/ETL configuration
+    :return: training Pipeline
+    """
     return ImbalancedPipeline([
-        ('standardize', QuantileTransformer(**conf['standardize'])),
-        ('decomposition', PCA(**conf['decomposition'])),
-        ('oversample', ADASYN(**conf['oversample'])),
-        ('model', lgb.LGBMClassifier(**conf['model'])),
+        ('standardize', QuantileTransformer(**dag_config['standardize'])),
+        ('decomposition', PCA(**dag_config['decomposition'])),
+        ('oversample', ADASYN(**dag_config['oversample'])),
+        ('model', lgb.LGBMClassifier(**dag_config['model'])),
     ])
 
 
 def get_prediction_pipeline(pipe) -> Pipeline:
-    """Gets the production prediction pipeline without oversampling"""
+    """Gets the production prediction pipeline without oversampling step.
+
+    :param: training pipeline
+    :return: new prediction pipeline
+    """
     copy = deepcopy(pipe)
     del copy.steps[2]
     return Pipeline(steps=copy.steps)

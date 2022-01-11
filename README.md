@@ -1,6 +1,14 @@
 # prod_mle_project
 Production Capstone Project for Springboard Machine Learning Engineer Career Track
 
+## Usage
+
+Navigate to https://flask-service.kma9dfq1a9nuc.us-west-2.cs.amazonlightsail.com/ in a web browser
+
+Click the 'Browse' button to upload a wav file using the file picker. Then click submit. 
+The file will be rejected if the size is beyond 16 mb. The response will contain a binary value
+specifying whether the audio's sentiment is negative (a 1) or positive (a 0).
+
 ## Installation
 
 In order to support librosa, this package requires Python 3.7.*
@@ -25,7 +33,7 @@ For reference the requirements.txt file was created with the following commands:
 From repo root run:
 `pytest tests`
 
-## Running
+## Running ML ETL Pipeline
 
 Run the ML training pipeline from CL to prepare the data and train a model:
 `python src/sentiment_classifier/pipeline.py`
@@ -78,4 +86,15 @@ aws lightsail delete-container-service --service-name flask-service
 
 ```
 
+## Sphinx documentation
+
+Good-looking html theme: `conda install -y sphinx_rtd_theme`
+
+`sphinx-quickstart docs`
+
+`sphinx-apidoc -f -o docs/source src/sentiment_classifier`
+
+`cd docs && make html && cd ..`
+
+`open build/html/index.html`
 

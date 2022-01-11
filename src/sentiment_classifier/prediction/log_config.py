@@ -1,3 +1,8 @@
+"""
+Optional configuration for flask app logging
+"""
+
+#: Logging configuration for flask app
 PREDICTION_LOG_CONFIG = {
     'version': 1,
     'formatters': {'default': {

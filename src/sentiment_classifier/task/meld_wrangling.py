@@ -12,16 +12,20 @@ from sentiment_classifier.util import listdir_ext, unique_fname
 
 @task(name='convert_wavs', log_stdout=True)
 def convert_mp4_to_wav(data_dir: str) -> List[str]:
-    """The MELD dataset provides 3 dirs of .mp4 files. This function converts all .mp4 files
-    to .wav and returns the .wav dir. If a .wav file already exists,
-    the conversion is skipped.
+    """Converts all .mp4 files from the MELD dataset to .wav and returns the .wav dir.
+    If a .wav file already exists, the conversion is skipped.
 
-    Expects the following input directory structure:
+    The MELD dataset consists of 3 dirs of .mp4 files: train, dev, test.
+
+    This function expects the following input directory structure:
     - data_dir/raw/[train|dev|test]
     - data_dir/labels/[train|dev|test]
 
-    Because of file namespace collisions, outputs wavs to following structure:
+    Because of file namespace collisions between the 3 dirs, the wav output has the following structure:
     - data_dir/audio/[train|dev|test]
+
+    :param data_dir: Directory containing the train,dev,test directories of .mp4 files
+    :return: full paths to the 3 wav file directories (train, dev, test)
     """
     logger = prefect.context.get('logger')
 
@@ -63,7 +67,11 @@ def convert_mp4_to_wav(data_dir: str) -> List[str]:
 
 @task(name='load_data_labels')
 def load_labels(data_dir: str) -> List[pd.DataFrame]:
-    """Loads the MELD data labels and constructs unique ids which correspond to audio files."""
+    """Loads the MELD data labels and constructs unique ids which correspond to audio files.
+
+    :param data_dir: Directory containing the MELD labels as csv files
+    :return: the train, dev, & test labels loaded as dataframes
+    """
     logger = prefect.context.get('logger')
 
     logger.info('Loading MELD label csvs')
@@ -81,7 +89,16 @@ def load_labels(data_dir: str) -> List[pd.DataFrame]:
 
 @task(name='add_audio_to_labels', log_stdout=True)
 def add_audio_to_labels(wav_dirs: str, label_dfs: List[pd.DataFrame]) -> pd.DataFrame:
-    """For each row in labels DataFrame, load corresponding audio and add it to the DataFrame."""
+    """Combines the dataset labels with the wav audios signal into a single DataFrame.
+
+    Based on label's UID (dialog_utterance) searches for corresponding wav file. If none
+    is found, the audio and sample rate is set to None signaling to downstream processor
+    that this row should be omitted from the final dataset.
+
+    :param wav_dirs: directories of the train, dev, test wav files
+    :param label_dfs: labels of the MELD train, dev, test sets
+    :return: Single DataFrame containing all the labels and corresponding audio in MELD dataset.
+    """
     logger = prefect.context.get('logger')
 
     dfs = []

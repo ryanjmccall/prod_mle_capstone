@@ -1,18 +1,47 @@
+"""
+Default configuration used to control the ML training pipeline ETL/DAG.
+"""
+
 from skopt.space import Real, Integer
 
 
+#: Random seed used throughout ML pipeline
 RANDOM_STATE = 0
+
+
+#: Tell sklearn et al to use all available cores to parallelize processing
 N_JOBS = -1
 
+
+#: Blessed audio length limit applied to all processed audio
 AUDIO_LIMIT = 5 * 22050  # 5 sec * sr
+
+
+#: Blessed window length when computing melspectrogram
 MEL_WINDOW_LENGTH = 8
+
+
+#: Number of melspectrogram frequencies computed
 N_MELS = 128
+
+
+#: Blessed window length when computing MFCC features
 MFCC_WINDOW_LENGTH = 512
+
+
+#: Number of MFCC coefficients computed
 N_MFCC = 20
+
+
+#: Blessed window length when computing Chroma features
 CHROMA_WINDOW_LENGTH = 32
+
+
+#: Number of chroma coefficients computed
 N_CHROMA = 12
 
 
+#: Default configuration for the ML pipeline DAG that runs to train the model.
 DAG_CONFIG = dict(
     # extract_features
     extract=dict(

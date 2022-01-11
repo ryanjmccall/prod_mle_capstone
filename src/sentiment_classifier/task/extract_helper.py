@@ -17,7 +17,20 @@ def extract_features(
     chroma_window_length=CHROMA_WINDOW_LENGTH,
     n_chroma=N_CHROMA
 ) -> np.ndarray:
-    """Extracts librosa features from a single audio signal."""
+    """Extracts librosa features from a single audio signal.
+
+    :param audio: raw audio signal
+    :type audio: List[float]
+    :param sr: audio sample rate
+    :type: sr: int
+    :param audio_limit: audio longer than this limit will be trimmed to this value
+    :param mel_window_length: length of window used to compute melspectrogram
+    :param n_mels: num mel frequencies computed
+    :param mfcc_window_length: length of window used to compute MFCCs
+    :param n_mfcc: num MFCCs computed
+    :param chroma_window_length: length of window used to compute chroma
+    :param n_chroma: num chroma computed
+    """
     audio = audio[:int(audio_limit)]
     return np.hstack((
         extract_melspectrogram(audio, sr, mel_window_length, n_mels),
