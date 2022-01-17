@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sentiment_classifier.config package &mdash; sentiment_classifier-ryanmccall 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sentiment_classifier.prediction package" href="sentiment_classifier.prediction.html" />
+    <link rel="prev" title="sentiment_classifier package" href="sentiment_classifier.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> sentiment_classifier-ryanmccall
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">sentiment_classifier</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="sentiment_classifier.html">sentiment_classifier package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="sentiment_classifier.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sentiment_classifier.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sentiment_classifier.prediction.html">sentiment_classifier.prediction package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sentiment_classifier.task.html">sentiment_classifier.task package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sentiment_classifier.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sentiment_classifier.html#module-sentiment_classifier.context">sentiment_classifier.context module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sentiment_classifier.html#module-sentiment_classifier.pipeline">sentiment_classifier.pipeline module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sentiment_classifier.html#module-sentiment_classifier.run_dag">sentiment_classifier.run_dag module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sentiment_classifier.html#module-sentiment_classifier.util">sentiment_classifier.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sentiment_classifier.html#module-sentiment_classifier">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sentiment_classifier-ryanmccall</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">sentiment_classifier</a> &raquo;</li>
+          <li><a href="sentiment_classifier.html">sentiment_classifier package</a> &raquo;</li>
+      <li>sentiment_classifier.config package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sentiment_classifier.config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="sentiment-classifier-config-package">
+<h1>sentiment_classifier.config package<a class="headerlink" href="#sentiment-classifier-config-package" title="Permalink to this headline"></a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="module-sentiment_classifier.config.default_config">
+<span id="sentiment-classifier-config-default-config-module"></span><h2>sentiment_classifier.config.default_config module<a class="headerlink" href="#module-sentiment_classifier.config.default_config" title="Permalink to this headline"></a></h2>
+<p>Default configuration used to control the ML training pipeline ETL/DAG.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.AUDIO_LIMIT">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">AUDIO_LIMIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">110250</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.AUDIO_LIMIT" title="Permalink to this definition"></a></dt>
+<dd><p>Blessed audio length limit applied to all processed audio</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.CHROMA_WINDOW_LENGTH">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">CHROMA_WINDOW_LENGTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">32</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.CHROMA_WINDOW_LENGTH" title="Permalink to this definition"></a></dt>
+<dd><p>Blessed window length when computing Chroma features</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.DAG_CONFIG">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">DAG_CONFIG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bayes_search':</span> <span class="pre">{'cv':</span> <span class="pre">3,</span> <span class="pre">'n_iter':</span> <span class="pre">1,</span> <span class="pre">'n_jobs':</span> <span class="pre">-1,</span> <span class="pre">'n_points':</span> <span class="pre">1,</span> <span class="pre">'refit':</span> <span class="pre">True,</span> <span class="pre">'scoring':</span> <span class="pre">'f1_weighted',</span> <span class="pre">'search_spaces':</span> <span class="pre">{'model__colsample_bytree':</span> <span class="pre">Real(low=0.92,</span> <span class="pre">high=0.999,</span> <span class="pre">prior='uniform',</span> <span class="pre">transform='identity'),</span> <span class="pre">'model__learning_rate':</span> <span class="pre">Real(low=0.1,</span> <span class="pre">high=0.9,</span> <span class="pre">prior='log-uniform',</span> <span class="pre">transform='identity'),</span> <span class="pre">'model__max_depth':</span> <span class="pre">Integer(low=10,</span> <span class="pre">high=28,</span> <span class="pre">prior='uniform',</span> <span class="pre">transform='identity'),</span> <span class="pre">'model__min_child_samples':</span> <span class="pre">Integer(low=30,</span> <span class="pre">high=50,</span> <span class="pre">prior='uniform',</span> <span class="pre">transform='identity'),</span> <span class="pre">'model__min_child_weight':</span> <span class="pre">Real(low=1e-06,</span> <span class="pre">high=0.0001,</span> <span class="pre">prior='log-uniform',</span> <span class="pre">transform='identity'),</span> <span class="pre">'model__n_estimators':</span> <span class="pre">Integer(low=300,</span> <span class="pre">high=400,</span> <span class="pre">prior='uniform',</span> <span class="pre">transform='identity'),</span> <span class="pre">'model__num_leaves':</span> <span class="pre">Integer(low=90,</span> <span class="pre">high=100,</span> <span class="pre">prior='uniform',</span> <span class="pre">transform='identity'),</span> <span class="pre">'model__subsample':</span> <span class="pre">Real(low=0.94,</span> <span class="pre">high=0.98,</span> <span class="pre">prior='uniform',</span> <span class="pre">transform='identity')},</span> <span class="pre">'verbose':</span> <span class="pre">0},</span> <span class="pre">'decomposition':</span> <span class="pre">{'n_components':</span> <span class="pre">50,</span> <span class="pre">'random_state':</span> <span class="pre">0},</span> <span class="pre">'extract':</span> <span class="pre">{'audio_limit':</span> <span class="pre">110250,</span> <span class="pre">'chroma_window_length':</span> <span class="pre">32,</span> <span class="pre">'mel_window_length':</span> <span class="pre">8,</span> <span class="pre">'mfcc_window_length':</span> <span class="pre">512,</span> <span class="pre">'n_chroma':</span> <span class="pre">12,</span> <span class="pre">'n_mels':</span> <span class="pre">128,</span> <span class="pre">'n_mfcc':</span> <span class="pre">20},</span> <span class="pre">'model':</span> <span class="pre">{'boosting_type':</span> <span class="pre">'dart',</span> <span class="pre">'class_weight':</span> <span class="pre">'balanced',</span> <span class="pre">'colsample_bytree':</span> <span class="pre">0.95,</span> <span class="pre">'learning_rate':</span> <span class="pre">0.5,</span> <span class="pre">'max_depth':</span> <span class="pre">14,</span> <span class="pre">'metric':</span> <span class="pre">'binary_logloss',</span> <span class="pre">'min_child_samples':</span> <span class="pre">30,</span> <span class="pre">'min_child_weight':</span> <span class="pre">1e-05,</span> <span class="pre">'min_split_gain':</span> <span class="pre">0,</span> <span class="pre">'n_estimators':</span> <span class="pre">320,</span> <span class="pre">'n_jobs':</span> <span class="pre">-1,</span> <span class="pre">'num_leaves':</span> <span class="pre">95,</span> <span class="pre">'objective':</span> <span class="pre">'binary',</span> <span class="pre">'random_state':</span> <span class="pre">0,</span> <span class="pre">'reg_alpha':</span> <span class="pre">0,</span> <span class="pre">'reg_lambda':</span> <span class="pre">0,</span> <span class="pre">'subsample':</span> <span class="pre">0.97175,</span> <span class="pre">'subsample_freq':</span> <span class="pre">2},</span> <span class="pre">'oversample':</span> <span class="pre">{'n_jobs':</span> <span class="pre">-1,</span> <span class="pre">'random_state':</span> <span class="pre">0},</span> <span class="pre">'random_state':</span> <span class="pre">0,</span> <span class="pre">'standardize':</span> <span class="pre">{'output_distribution':</span> <span class="pre">'normal',</span> <span class="pre">'random_state':</span> <span class="pre">0},</span> <span class="pre">'test_size':</span> <span class="pre">0.2}</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.DAG_CONFIG" title="Permalink to this definition"></a></dt>
+<dd><p>Default configuration for the ML pipeline DAG that runs to train the model.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.MEL_WINDOW_LENGTH">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">MEL_WINDOW_LENGTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.MEL_WINDOW_LENGTH" title="Permalink to this definition"></a></dt>
+<dd><p>Blessed window length when computing melspectrogram</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.MFCC_WINDOW_LENGTH">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">MFCC_WINDOW_LENGTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">512</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.MFCC_WINDOW_LENGTH" title="Permalink to this definition"></a></dt>
+<dd><p>Blessed window length when computing MFCC features</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.N_CHROMA">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">N_CHROMA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.N_CHROMA" title="Permalink to this definition"></a></dt>
+<dd><p>Number of chroma coefficients computed</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.N_JOBS">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">N_JOBS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.N_JOBS" title="Permalink to this definition"></a></dt>
+<dd><p>Tell sklearn et al to use all available cores to parallelize processing</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.N_MELS">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">N_MELS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.N_MELS" title="Permalink to this definition"></a></dt>
+<dd><p>Number of melspectrogram frequencies computed</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.N_MFCC">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">N_MFCC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.N_MFCC" title="Permalink to this definition"></a></dt>
+<dd><p>Number of MFCC coefficients computed</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="sentiment_classifier.config.default_config.RANDOM_STATE">
+<span class="sig-prename descclassname"><span class="pre">sentiment_classifier.config.default_config.</span></span><span class="sig-name descname"><span class="pre">RANDOM_STATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#sentiment_classifier.config.default_config.RANDOM_STATE" title="Permalink to this definition"></a></dt>
+<dd><p>Random seed used throughout ML pipeline</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sentiment_classifier.config">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-sentiment_classifier.config" title="Permalink to this headline"></a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sentiment_classifier.html" class="btn btn-neutral float-left" title="sentiment_classifier package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sentiment_classifier.prediction.html" class="btn btn-neutral float-right" title="sentiment_classifier.prediction package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Ryan J McCall.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

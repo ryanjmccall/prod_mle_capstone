@@ -6,6 +6,7 @@ EXPOSE 5000/tcp
 # set container working directory
 WORKDIR /workdir
 
+# Must install libsndfile1 https://packages.debian.org/sid/libsndfile1 on linux OS for librosa to work
 # https://stackoverflow.com/questions/61235346/librosa-raised-oserrorsndfile-library-not-found-in-docker
 RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends build-essential gcc libsndfile1
@@ -14,7 +15,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install -e git+https://github.com/ryanjmccall/prod_mle_capstone.git#egg=sentiment_classifier-ryanmccall
 
-# copy local src directory to workdir
+# copy repo src directory to workdir
 COPY src/ .
 
 ENV FLASK_APP=sentiment_classifier/prediction/wsgi.py
