@@ -6,16 +6,22 @@ This repo contains my Capstone Project for the
 This project addresses the business needs of a hypothetical call center which must quickly determine whether its calls require escalation / intervention due to customer dissatisfaction. 
 For this project I selected an audio dataset and then performed data cleaning, wrangling, and exploratory data analysis. 
 Next I performed feature selection/development, assessed several ML algorithms, and performed various hyperparameter searches.
+(Jupyter Notebooks available under `src/notebooks`)
 With a performant model in hand, I developed an ETL pipeline to reliably reproduce the 
 training results from the initial data. Next wrote an API to accept audio data and respond with a binary sentiment classification.
 Finally, I containerized the API and deployed it to AWS. 
 
 # Usage
-Navigate to https://flask-service.kma9dfq1a9nuc.us-west-2.cs.amazonlightsail.com/ in a web browser
+Navigate to [Prod Prediction App](https://flask-service.kma9dfq1a9nuc.us-west-2.cs.amazonlightsail.com/) in a browser
 
 Click the 'Browse' button to upload a file using the file picker and then click submit. 
 The file must be of .wav format and less than 16 mb is size. The response will contain a binary value
 specifying whether the audio's sentiment is negative (value 1 returned) or positive (value 0 returned).
+
+# Dataset
+The MELD dataset may be downloaded directly from: https://affective-meld.github.io/ See 'Download Raw Data'.
+In particular, this project uses the Raw video files and their associated labels.
+Here is a [backup](https://drive.google.com/drive/folders/1MIOJ-vCP218ds9yZaewbrA_M7SlMrRrm?usp=sharing) in case the original is down.
 
 # Development Installation
 Python 3.7.* is required to support the librosa audio package. Due to dependency compability issues the
@@ -46,6 +52,7 @@ The training ETL Pipeline uses a separate set of requirements:
 Run the unit tests:
 `pytest tests`
 
+Download the raw video files downloaded to the `data/raw/dev|train|test` directories.
 Run the ML training pipeline to prepare the data and train a model:
 `python src/sentiment_classifier/run_dag.py`
 
@@ -114,5 +121,6 @@ Generate docs:
 
 `cd docs && make html && cd ..`
 
-`open build/html/index.html`
+Generated docs are viewable from:
+`docs/build/html/index.html`
 
