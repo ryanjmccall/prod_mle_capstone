@@ -1,18 +1,18 @@
 # Audio Sentiment Classifier Capstone Project
 
 # Summary
-This repo contains my Capstone Project for the 
-[Machine Learning Engineer Career Track](https://www.springboard.com/courses/ai-machine-learning-career-track/) at Springboard.
+This repo contains my Capstone Project developed during my  
+[Machine Learning Engineer studies](https://www.springboard.com/courses/ai-machine-learning-career-track/).
 This project addresses the business needs of a hypothetical call center which must quickly determine whether its calls require escalation / intervention due to customer dissatisfaction. 
 For this project I selected an audio dataset and then performed data cleaning, wrangling, and exploratory data analysis. 
 Next I performed feature selection/development, assessed several ML algorithms, and performed various hyperparameter searches.
-(Jupyter Notebooks available under `src/notebooks`)
+(Details found [here](src/notebooks/README.md))
 With a performant model in hand, I developed an ETL pipeline to reliably reproduce the 
 training results from the initial data. Next wrote an API to accept audio data and respond with a binary sentiment classification.
 Finally, I containerized the API and deployed it to AWS. 
 
 # Usage
-Navigate to [Prod Prediction App](https://flask-service.kma9dfq1a9nuc.us-west-2.cs.amazonlightsail.com/) in a browser
+Navigate to [Prod Prediction App](https://flask-service.kma9dfq1a9nuc.us-west-2.cs.amazonlightsail.com/) in a browser.
 
 Click the 'Browse' button to upload a file using the file picker and then click submit. 
 The file must be of .wav format and less than 16 mb is size. The response will contain a binary value
