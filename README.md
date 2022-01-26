@@ -18,6 +18,8 @@ Click the 'Browse' button to upload a file using the file picker and then click 
 The file must be of .wav format and less than 16 mb is size. The response will contain a binary value
 specifying whether the audio's sentiment is negative (value 1 returned) or positive (value 0 returned).
 
+You can try some sample files from the MELD dataset I've included [here](data/samples). 
+
 # Dataset
 The MELD dataset may be downloaded directly from: https://affective-meld.github.io/ See 'Download Raw Data'.
 In particular, this project uses the Raw video files and their associated labels.
